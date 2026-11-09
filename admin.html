@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#1a0f24">
+<title>Greeting Share – Admin</title>
+<link rel="icon" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700;1,700&family=Hind:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#1a0f24;--ink:#fff3e6;--muted:#c3a9c9;--glass:rgba(48,25,62,.66);--line:rgba(255,200,150,.2);--wa:#25d366;--gold:#ffc94d;--rose:#ff5f8f;--orange:#ff8a3d;--err:#ff7a85}
+*{box-sizing:border-box}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font:16px/1.5 'Hind',system-ui,sans-serif;padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px);overflow-x:hidden}
+.glow{position:fixed;inset:0;z-index:-1;overflow:hidden}
+.glow i{position:absolute;width:50vmax;height:50vmax;border-radius:50%;filter:blur(95px);opacity:.3;animation:drift 20s ease-in-out infinite alternate}
+.glow i:nth-child(1){background:var(--rose);top:-18vmax;left:-14vmax}
+.glow i:nth-child(2){background:var(--orange);bottom:-22vmax;right:-12vmax;animation-delay:-7s;opacity:.22}
+@keyframes drift{to{transform:translate(7vmax,5vmax) scale(1.12)}}
+.wrap{max-width:920px;margin:0 auto;padding:28px 16px 50px}
+h1{font:700 clamp(28px,7vw,42px)/1.05 'Fraunces',serif;margin:0;background:linear-gradient(100deg,#fff,var(--gold) 60%,var(--rose));-webkit-background-clip:text;background-clip:text;color:transparent}
+input,select,textarea{font:inherit;color:var(--ink);background:rgba(20,8,30,.6);border:1px solid var(--line);border-radius:12px;padding:11px 14px;transition:border-color .2s,box-shadow .2s;width:100%}
+input:focus,select:focus{outline:0;border-color:var(--gold);box-shadow:0 0 0 4px rgba(255,201,77,.15)}
+select option{background:#2a1637}
+button{font:inherit;cursor:pointer}
+button:focus-visible,.row:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.btn{border:1px solid var(--line);background:rgba(255,255,255,.06);color:var(--ink);border-radius:12px;padding:10px 16px;font-weight:500}
+.btn:hover{border-color:var(--gold)}
+.btn.pri{border:0;background:linear-gradient(135deg,var(--rose),var(--orange));color:#fff;font-weight:600}
+.btn.bad{color:var(--err)}
+/* login */
+.login{min-height:100vh;display:grid;place-items:center;padding:20px}
+.lbox{width:100%;max-width:380px;padding:28px 24px;border-radius:22px;background:var(--glass);border:1px solid var(--line);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:0 30px 80px -30px rgba(0,0,0,.7)}
+.lbox h1{margin-bottom:6px}
+.lbox p{margin:0 0 18px;color:var(--muted)}
+.pw{position:relative}.pw button{position:absolute;right:6px;top:50%;transform:translateY(-50%);border:0;background:none;color:var(--muted);padding:8px 10px}
+.err{color:var(--err);min-height:22px;margin:10px 0 0;font-size:14.5px}
+/* dash */
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:20px}
+.top small{display:block;color:var(--muted)}
+.acts{display:flex;gap:8px;flex-wrap:wrap}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px}
+@media(max-width:620px){.stats{grid-template-columns:repeat(2,1fr)}}
+.stat{padding:14px 16px;border-radius:16px;background:var(--glass);border:1px solid var(--line)}
+.stat b{display:block;font:700 28px/1.1 'Fraunces',serif;color:var(--gold);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.stat span{color:var(--muted);font-size:13.5px}
+.filters{display:grid;grid-template-columns:1fr 200px;gap:10px;margin-bottom:14px}
+@media(max-width:520px){.filters{grid-template-columns:1fr}}
+.list{display:flex;flex-direction:column;gap:8px}
+.row{display:grid;grid-template-columns:44px 1fr auto;gap:12px;align-items:center;padding:12px 14px;border-radius:16px;background:var(--glass);border:1px solid var(--line);cursor:pointer;text-align:left;color:var(--ink);width:100%}
+.row:hover{border-color:var(--gold)}
+.em{font-size:28px;text-align:center}
+.row strong{display:block}
+.row small{display:block;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row .meta{text-align:right;font-size:13px;color:var(--muted);white-space:nowrap}
+.tag{display:inline-block;margin-top:3px;padding:1px 9px;border-radius:99px;font-size:12px;background:rgba(255,201,77,.14);border:1px solid rgba(255,201,77,.35);color:var(--gold)}
+.empty{padding:30px;text-align:center;color:var(--muted)}
+/* dialog */
+dialog{width:min(560px,94vw);max-height:88vh;padding:0;border:1px solid var(--line);border-radius:22px;background:#2a1637;color:var(--ink);overflow:auto}
+dialog::backdrop{background:rgba(8,3,14,.7);backdrop-filter:blur(4px)}
+.dbody{padding:22px}
+.dbody h2{margin:0 0 4px;font:700 26px 'Fraunces',serif;color:var(--gold)}
+.dbody .sub{color:var(--muted);margin:0 0 14px;font-size:14.5px}
+.dbody pre{white-space:pre-wrap;font:inherit;margin:0 0 14px;padding:14px;border-radius:14px;background:rgba(20,8,30,.6);border:1px solid var(--line)}
+.ph{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px;margin-bottom:12px}
+.ph a{display:block;border-radius:10px;overflow:hidden;border:1px solid var(--line)}
+.ph img{width:100%;aspect-ratio:1;object-fit:cover;display:block}
+.fl{display:block;color:var(--gold);margin-bottom:6px;word-break:break-all}
+.dact{display:flex;gap:8px;justify-content:flex-end;margin-top:16px}
+[hidden]{display:none!important}
+@media(prefers-reduced-motion:reduce){*,*::after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="glow" aria-hidden="true"><i></i><i></i></div>
+
+<!-- LOGIN -->
+<section class="login" id="login">
+  <form class="lbox" id="lform" autocomplete="off">
+    <h1>Admin</h1>
+    <p>Greeting Share ka admin panel. Password daalo.</p>
+    <div class="pw">
+      <input id="pw" type="password" placeholder="Password" autocomplete="current-password" aria-label="Password" required>
+      <button type="button" id="eye" aria-label="Password dikhao">👁</button>
+    </div>
+    <div class="err" id="lerr" role="alert"></div>
+    <button class="btn pri" style="width:100%;margin-top:10px;padding:13px" id="lbtn">Admin kholo</button>
+  </form>
+</section>
+
+<!-- DASHBOARD -->
+<main class="wrap" id="dash" hidden>
+  <div class="top">
+    <div><h1>Admin Panel</h1><small>Developed by Siddhesh Chandrakant Sangale</small></div>
+    <div class="acts">
+      <button class="btn" id="refresh" type="button">🔄 Refresh</button>
+      <button class="btn" id="csv" type="button">⬇ CSV</button>
+      <button class="btn" id="logout" type="button">Logout</button>
+    </div>
+  </div>
+  <div class="stats" id="stats"></div>
+  <div class="filters">
+    <input id="q" type="search" placeholder="Naam, number ya message dhundo..." aria-label="Search">
+    <select id="occ" aria-label="Occasion filter"><option value="">Saare occasions</option></select>
+  </div>
+  <div class="list" id="list" aria-live="polite"></div>
+</main>
+
+<dialog id="dlg"><div class="dbody" id="dbody"></div></dialog>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, getDocs, query, orderBy, limit, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+/* ====== CONFIG ====== */
+const firebaseConfig = { apiKey: "AIzaSyBcXm5QQaYCCddVXNgGqTBAszdKEK-0PJQ", authDomain: "multi-service-app-77dd8.firebaseapp.com", projectId: "multi-service-app-77dd8", storageBucket: "multi-service-app-77dd8.appspot.com", messagingSenderId: "123732555482", appId: "1:123732555482:web:ea47c825e0dbb504f597e3" };
+const COL_LOG = "greet_shares";
+const PW_SALT = "greet-admin|";
+const PW_HASH = "b1d5fc706d366dfae6a966a37c8f119ab8a543f782748995afadd1b70531e25f"; // password ka SHA-256 (plain password yahan nahi hai)
+const MAX_TRIES = 5, LOCK_MS = 60000;
+/* ==================== */
+
+const db = getFirestore(initializeApp(firebaseConfig));
+const $ = id => document.getElementById(id);
+const sha = async t => [...new Uint8Array(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(t)))].map(x => x.toString(16).padStart(2, "0")).join("");
+const store = { get: k => { try { return sessionStorage.getItem(k); } catch { return null; } }, set: (k, v) => { try { sessionStorage.setItem(k, v); } catch {} }, del: k => { try { sessionStorage.removeItem(k); } catch {} } };
+
+/* ---- login ---- */
+let tries = 0, lockUntil = 0;
+$("eye").onclick = () => { const p = $("pw"); p.type = p.type === "password" ? "text" : "password"; };
+$("lform").onsubmit = async e => {
+  e.preventDefault();
+  const now = Date.now();
+  if (now < lockUntil) { $("lerr").textContent = `Bahut galat try. ${Math.ceil((lockUntil - now) / 1000)} sec baad dobara karo.`; return; }
+  if (await sha(PW_SALT + $("pw").value) === PW_HASH) { store.set("ga", "1"); $("pw").value = ""; open_(); }
+  else {
+    tries++; $("pw").value = "";
+    if (tries >= MAX_TRIES) { lockUntil = Date.now() + LOCK_MS; tries = 0; $("lerr").textContent = "5 baar galat. 1 minute ke liye lock."; }
+    else $("lerr").textContent = `Galat password. (${MAX_TRIES - tries} try bache)`;
+  }
+};
+$("logout").onclick = () => { store.del("ga"); location.reload(); };
+function open_() { $("login").hidden = true; $("dash").hidden = false; load(); }
+if (store.get("ga") === "1") open_();
+
+/* ---- data ---- */
+let all = [];
+const fmt = ts => { const d = ts?.toDate ? ts.toDate() : null; return d ? d.toLocaleString([], { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" }) : "—"; };
+async function load() {
+  $("list").innerHTML = '<div class="empty">Load ho raha hai...</div>';
+  try {
+    const snap = await getDocs(query(collection(db, COL_LOG), orderBy("createdAt", "desc"), limit(500)));
+    all = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    const occs = [...new Set(all.map(x => x.occasion).filter(Boolean))].sort();
+    const sel = $("occ"), keep = sel.value; sel.length = 1;
+    occs.forEach(o => { const op = document.createElement("option"); op.value = o; op.textContent = o; sel.append(op); });
+    sel.value = occs.includes(keep) ? keep : "";
+    render();
+  } catch (e) { console.error(e); $("list").innerHTML = ""; const d = document.createElement("div"); d.className = "empty"; d.textContent = "Data load nahi hua: " + (e.message || e) + " (Firestore rules check karo)"; $("list").append(d); }
+}
+function filtered() {
+  const q = $("q").value.trim().toLowerCase(), o = $("occ").value;
+  return all.filter(x => (!o || x.occasion === o) && (!q || [x.receiverName, x.receiverNumber, x.message, x.from, x.occasion].some(v => (v || "").toLowerCase().includes(q))));
+}
+function stat(v, l) { const d = document.createElement("div"); d.className = "stat"; const b = document.createElement("b"); b.textContent = v; const s = document.createElement("span"); s.textContent = l; d.append(b, s); return d; }
+function render() {
+  const today = new Date().toDateString();
+  const cnt = {}; all.forEach(x => { if (x.occasion) cnt[x.occasion] = (cnt[x.occasion] || 0) + 1; });
+  const top = Object.entries(cnt).sort((a, b) => b[1] - a[1])[0];
+  $("stats").replaceChildren(
+    stat(all.length, "Total bheje"),
+    stat(new Set(all.map(x => x.receiverNumber)).size, "Alag log"),
+    stat(all.filter(x => x.createdAt?.toDate && x.createdAt.toDate().toDateString() === today).length, "Aaj"),
+    stat(top ? top[0] : "—", "Sabse zyada occasion")
+  );
+  const rows = filtered(), box = $("list"); box.replaceChildren();
+  if (!rows.length) { const d = document.createElement("div"); d.className = "empty"; d.textContent = all.length ? "Koi match nahi mila." : "Abhi tak kuch nahi bheja gaya."; box.append(d); return; }
+  rows.forEach(x => {
+    const b = document.createElement("button"); b.type = "button"; b.className = "row";
+    const em = document.createElement("div"); em.className = "em"; em.textContent = x.occasion ? (({ Birthday: "🎂", "Good Morning": "🌞", Diwali: "🪔", Eid: "🌙", "New Year": "🎆", Anniversary: "💞", Congratulations: "🏆", Friendship: "🤝", "Thank You": "🙏", "Get Well": "💐", Ganpati: "🐘", "Raksha Bandhan": "🧿", Love: "❤️" })[x.occasion] || "💌") : "💌";
+    const mid = document.createElement("div"); const n = document.createElement("strong"); n.textContent = `${x.receiverName || "?"} · ${x.receiverNumber || ""}`;
+    const m = document.createElement("small"); m.textContent = (x.message || "").replace(/\s+/g, " ");
+    const tg = document.createElement("span"); tg.className = "tag"; tg.textContent = x.occasion || "Greeting"; mid.append(n, m, tg);
+    const meta = document.createElement("div"); meta.className = "meta"; meta.textContent = fmt(x.createdAt);
+    const extra = (x.images?.length || 0) + (x.files?.length || 0); if (extra) { const e = document.createElement("div"); e.textContent = "📎 " + extra; meta.append(e); }
+    b.append(em, mid, meta); b.onclick = () => show(x); box.append(b);
+  });
+}
+$("q").addEventListener("input", render); $("occ").addEventListener("change", render); $("refresh").onclick = load;
+
+/* ---- detail ---- */
+const dlg = $("dlg");
+function show(x) {
+  const bd = $("dbody"); bd.replaceChildren();
+  const h = document.createElement("h2"); h.textContent = x.occasion || "Greeting";
+  const sub = document.createElement("p"); sub.className = "sub"; sub.textContent = `${x.receiverName || ""} · ${x.receiverNumber || ""} · ${fmt(x.createdAt)}` + (x.template && x.template !== "none" ? ` · Card: ${x.template}` : "") + (x.from ? ` · From: ${x.from}` : "");
+  const pre = document.createElement("pre"); pre.textContent = x.message || "";
+  bd.append(h, sub, pre);
+  const imgs = (x.images || []).filter(u => /^https:\/\//.test(u));
+  if (imgs.length) { const g = document.createElement("div"); g.className = "ph"; imgs.forEach(u => { const a = document.createElement("a"); a.href = u; a.target = "_blank"; a.rel = "noopener"; const i = document.createElement("img"); i.src = u; i.alt = "Photo"; i.loading = "lazy"; a.append(i); g.append(a); }); bd.append(g); }
+  (x.files || []).filter(f => /^https:\/\//.test(f.url)).forEach(f => { const a = document.createElement("a"); a.className = "fl"; a.href = f.url; a.target = "_blank"; a.rel = "noopener"; a.textContent = "📎 " + f.name; bd.append(a); });
+  const act = document.createElement("div"); act.className = "dact";
+  const del = document.createElement("button"); del.type = "button"; del.className = "btn bad"; del.textContent = "🗑 Delete";
+  del.onclick = async () => {
+    if (!confirm("Ye record delete karna hai? (Receiver ko bheja hua message wapas nahi hoga)")) return;
+    try { await deleteDoc(doc(db, COL_LOG, x.id)); all = all.filter(y => y.id !== x.id); dlg.close(); render(); } catch (e) { alert("Delete nahi hua: " + (e.message || e)); }
+  };
+  const cl = document.createElement("button"); cl.type = "button"; cl.className = "btn pri"; cl.textContent = "Band karo"; cl.onclick = () => dlg.close();
+  act.append(del, cl); bd.append(act); dlg.showModal();
+}
+dlg.addEventListener("click", e => { if (e.target === dlg) dlg.close(); });
+
+/* ---- csv ---- */
+$("csv").onclick = () => {
+  const rows = filtered(); if (!rows.length) return;
+  const esc = v => { v = String(v ?? "").replace(/\r?\n/g, " "); if (/^[=+\-@]/.test(v)) v = "'" + v; return '"' + v.replace(/"/g, '""') + '"'; };
+  const head = ["Date", "Name", "Number", "Occasion", "Template", "From", "Message", "Photos", "Files"];
+  const lines = [head.join(",")].concat(rows.map(x => [fmt(x.createdAt), x.receiverName, x.receiverNumber, x.occasion, x.template, x.from, x.message, (x.images || []).length, (x.files || []).length].map(esc).join(",")));
+  const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob(["\ufeff" + lines.join("\n")], { type: "text/csv;charset=utf-8" })); a.download = "greetings-" + new Date().toISOString().slice(0, 10) + ".csv"; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+};
+</script>
+</body>
+</html>
