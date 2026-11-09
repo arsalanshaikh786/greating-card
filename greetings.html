@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Greeting Share – Mast Greetings, Cards & Photos straight to WhatsApp</title>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#1a0f24">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Greetings">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700;1,700&family=Hind:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#1a0f24;--ink:#fff3e6;--muted:#c3a9c9;--glass:rgba(48,25,62,.66);--line:rgba(255,200,150,.2);--wa:#25d366;--gold:#ffc94d;--rose:#ff5f8f;--orange:#ff8a3d;--err:#ff7a85}
+*{box-sizing:border-box}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font:16px/1.55 'Hind',system-ui,sans-serif;padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px);overflow-x:hidden}
+.glow{position:fixed;inset:0;z-index:-1;overflow:hidden}
+.glow i{position:absolute;width:50vmax;height:50vmax;border-radius:50%;filter:blur(95px);opacity:.34;animation:drift 20s ease-in-out infinite alternate}
+.glow i:nth-child(1){background:var(--rose);top:-18vmax;left:-14vmax}
+.glow i:nth-child(2){background:var(--orange);bottom:-22vmax;right:-12vmax;animation-delay:-7s;opacity:.26}
+.glow i:nth-child(3){background:#9a6bff;top:35%;left:50%;width:28vmax;height:28vmax;opacity:.18;animation-delay:-12s}
+@keyframes drift{to{transform:translate(7vmax,5vmax) scale(1.12)}}
+.wrap{max-width:700px;margin:0 auto;padding:34px 16px 40px}
+h1{font:700 clamp(38px,10vw,66px)/1 'Fraunces',serif;margin:0 0 12px;letter-spacing:-.02em;background:linear-gradient(100deg,#fff 5%,var(--gold) 50%,var(--rose) 95%);-webkit-background-clip:text;background-clip:text;color:transparent;animation:rise .8s cubic-bezier(.2,.8,.2,1) both}
+h1 em{font-style:italic}
+@keyframes rise{from{opacity:0;transform:translateY(16px)}}
+.sub{color:var(--muted);margin:0 0 24px;max-width:46ch;font-size:17px}
+.dev{display:flex;align-items:center;gap:16px;margin:0 0 20px;padding:16px 18px;border-radius:20px;border:1px solid transparent;background:linear-gradient(#2a1637,#2a1637) padding-box,linear-gradient(120deg,var(--gold),var(--rose),#9a6bff) border-box;box-shadow:0 20px 50px -22px rgba(255,95,143,.65)}
+.avatar{flex:none;width:60px;height:60px;border-radius:50%;padding:3px;background:conic-gradient(var(--gold),var(--rose),#9a6bff,var(--gold));animation:spin 9s linear infinite}
+.avatar span{display:grid;place-items:center;width:100%;height:100%;border-radius:50%;background:#2a1637;font:700 20px 'Fraunces',serif;color:#fff;animation:spin 9s linear infinite reverse}
+@keyframes spin{to{transform:rotate(360deg)}}
+.who small{display:block;color:var(--muted);font-size:13px;line-height:1.2}
+.who strong{display:block;font:700 clamp(19px,5.2vw,28px)/1.15 'Fraunces',serif;color:var(--gold)}
+.card{background:var(--glass);border:1px solid var(--line);border-radius:22px;padding:22px;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:0 30px 80px -30px rgba(0,0,0,.7),inset 0 1px 0 rgba(255,255,255,.07)}
+@media(max-width:520px){.card{padding:16px}}
+label{display:block;font:500 14px 'Hind',sans-serif;color:var(--muted);margin:18px 0 7px}
+label i{color:var(--rose);font-style:normal}
+label span{opacity:.7}
+input,textarea{width:100%;font:inherit;color:var(--ink);background:rgba(20,8,30,.6);border:1px solid var(--line);border-radius:12px;padding:12px 14px;transition:border-color .2s,box-shadow .2s}
+input::placeholder,textarea::placeholder{color:#8b719296}
+input:focus,textarea:focus{outline:0;border-color:var(--gold);box-shadow:0 0 0 4px rgba(255,201,77,.15)}
+textarea{min-height:170px;resize:vertical;line-height:1.6}
+button:focus-visible,.drop:focus-visible,.occ:focus-visible,.tpl:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.occs{display:flex;flex-wrap:wrap;gap:8px}
+.occ{font:500 14px 'Hind',sans-serif;color:var(--ink);background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:99px;padding:7px 13px;cursor:pointer;transition:background .15s,border-color .15s,transform .15s}
+.occ:hover{border-color:var(--gold)}
+.occ[aria-pressed=true]{background:linear-gradient(135deg,var(--rose),var(--orange));border-color:transparent;color:#fff;transform:scale(1.04)}
+.ghost{background:none;border:1px dashed var(--line);color:var(--gold);border-radius:10px;padding:8px 14px;font:500 14px 'Hind',sans-serif;cursor:pointer}
+.ghost:hover{border-color:var(--gold)}
+.ghost+.ghost{margin-left:6px}
+.rcp{display:grid;grid-template-columns:1fr 1fr 40px;gap:8px;margin-bottom:8px}
+.rcp button{border:1px solid var(--line);background:rgba(255,255,255,.05);color:var(--ink);border-radius:12px;font-size:20px;cursor:pointer}
+@media(max-width:520px){.rcp{grid-template-columns:1fr 1fr 38px}}
+#pasteBox{margin-top:10px}#pasteBox textarea{min-height:110px;margin-bottom:8px}
+.cnt{margin-top:8px;color:var(--muted);font-size:14px}
+.tpls{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+@media(min-width:560px){.tpls{grid-template-columns:repeat(4,1fr)}}
+.tpl{padding:0;border:2px solid var(--line);border-radius:12px;background:rgba(255,255,255,.04);overflow:hidden;cursor:pointer;color:var(--ink);font:500 13px 'Hind',sans-serif;transition:transform .15s,border-color .15s}
+.tpl canvas{display:block;width:100%;height:auto}
+.tpl span{display:block;padding:5px 0 6px;text-align:center}
+.tpl[aria-pressed=true]{border-color:var(--gold);transform:scale(1.04);box-shadow:0 0 0 3px rgba(255,201,77,.25)}
+.tpl.none{display:grid;place-items:center;aspect-ratio:1/1.12;padding:8px;text-align:center}
+.drop{border:1.5px dashed rgba(255,200,150,.38);border-radius:14px;padding:24px;text-align:center;color:var(--muted);cursor:pointer;transition:all .2s;background:rgba(255,255,255,.02)}
+.drop:hover,.drop.over{border-color:var(--gold);background:rgba(255,201,77,.07);color:var(--ink)}
+.drop svg{display:block;margin:0 auto 8px;color:var(--gold)}
+.thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:10px;margin-top:12px}
+.thumb{position:relative;aspect-ratio:1;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#12081c}
+.thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.thumb button{position:absolute;top:5px;right:5px;width:26px;height:26px;border-radius:50%;border:0;background:rgba(0,0,0,.65);color:#fff;font-size:16px;line-height:1;cursor:pointer;padding:0}
+.send{position:relative;overflow:hidden;margin-top:24px;width:100%;padding:16px;display:flex;align-items:center;justify-content:center;gap:10px;font:600 17px 'Hind',sans-serif;color:#04210f;background:linear-gradient(135deg,var(--wa),#8af2b0);border:0;border-radius:14px;cursor:pointer;box-shadow:0 14px 34px -10px rgba(37,211,102,.6);transition:transform .15s}
+.send:hover{transform:translateY(-2px)}.send:active{transform:translateY(1px)}.send:disabled{opacity:.65;cursor:wait}
+.status{margin-top:14px;min-height:22px;font-size:15px;color:var(--muted)}
+.status.err{color:var(--err)}.status.ok{color:var(--wa);font-weight:500}
+.bar{height:5px;background:rgba(255,255,255,.1);border-radius:3px;margin-top:14px;overflow:hidden;display:none}
+.bar b{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold),var(--wa));transition:width .3s}
+#res{list-style:none;margin:10px 0 0;padding:0;font-size:14.5px}
+#res li{padding:5px 0;border-bottom:1px solid var(--line);display:flex;gap:8px}
+#res li.ok{color:var(--wa)}#res li.bad{color:var(--err)}#res li.wait{color:var(--muted)}
+footer{text-align:center;margin-top:28px;color:var(--muted);font-size:14.5px}
+footer strong{color:var(--gold);font-size:16px}
+.gcard{margin-top:18px;padding:20px;border-radius:20px;background:var(--glass);border:1px solid var(--line)}
+.gcard h2{margin:0 0 8px;font:700 24px 'Fraunces',serif;color:var(--gold)}
+.gcard p{margin:0 0 12px;white-space:pre-wrap}
+.gcard .ph{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.gcard .ph a{display:block;border-radius:12px;overflow:hidden;border:1px solid var(--line)}
+.gcard .ph img{width:100%;display:block;aspect-ratio:1;object-fit:cover}
+.gcard small{display:block;margin-top:10px;color:var(--muted)}
+.chip{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:8px;height:100%;text-align:center;font-size:12px;color:var(--muted);word-break:break-all}.chip b{font:700 13px 'Hind',sans-serif;color:var(--gold);background:rgba(255,201,77,.14);border-radius:6px;padding:3px 7px}.chip span{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.inst{position:fixed;right:14px;bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:5;padding:11px 16px;border:0;border-radius:99px;background:linear-gradient(135deg,var(--rose),var(--orange));color:#fff;font:600 15px 'Hind',sans-serif;box-shadow:0 10px 30px -8px rgba(255,95,143,.7);cursor:pointer}
+[hidden]{display:none!important}
+@media(prefers-reduced-motion:reduce){*,*::after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="glow" aria-hidden="true"><i></i><i></i><i></i></div>
+<main class="wrap">
+  <h1 id="h1">Greeting <em>Share</em></h1>
+  <p class="sub" id="sub">Occasion chuno, card template lagao, photos jodo – ek ya kai logon ke WhatsApp pe naam ke saath seedha bhejo. 🎉</p>
+
+  <section class="dev" aria-label="Developer">
+    <div class="avatar"><span>SS</span></div>
+    <div class="who"><small>Developed by</small><strong>Siddhesh Chandrakant Sangale</strong></div>
+  </section>
+
+  <!-- SEND MODE -->
+  <section class="card" id="sendView">
+    <label style="margin-top:0">Kisko bhejna hai <i>*</i> <span>(naam + WhatsApp number, ek ya zyada)</span></label>
+    <div id="rcps"></div>
+    <div><button class="ghost" id="addR" type="button">＋ Aur person jodo</button><button class="ghost" id="pasteB" type="button">📋 List paste karo</button></div>
+    <div id="pasteBox" hidden>
+      <textarea id="plist" placeholder="Har line mein ek: naam aur number&#10;Rahul 9876543210&#10;Sneha, 9123456780"></textarea>
+      <button class="ghost" id="plistAdd" type="button">List mein add karo</button>
+    </div>
+    <div class="cnt" id="cnt"></div>
+
+    <label for="from">Tumhara naam <span>(optional, "From" mein dikhega)</span></label>
+    <input id="from" type="text" autocomplete="off" placeholder="e.g. Siddhesh">
+
+    <label>Occasion</label>
+    <div class="occs" id="occs" role="group" aria-label="Occasion"></div>
+
+    <label>Card template <span>(WhatsApp pe card image ban kar jayegi)</span></label>
+    <div class="tpls" id="tpls" role="group" aria-label="Card template"></div>
+
+    <label for="msg">Greeting message <i>*</i> <span>(edit kar sakte ho, {name} har bande ka naam ban jayega)</span></label>
+    <textarea id="msg" placeholder="Occasion chuno, greeting yahan aa jayegi..."></textarea>
+    <button class="ghost" id="shuf" type="button" style="margin-top:8px">🔀 Doosri greeting dikhao</button>
+
+    <label>Photos &amp; files <span>(optional, sabko same jayengi &middot; personal link tabhi jayega jab photo/file ho)</span></label>
+    <div class="drop" id="drop" tabindex="0" role="button" aria-label="Photo ya file chuno">
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="1.8"/><path d="m21 15-5-5L5 21"/></svg>
+      Photo ya file (PDF, Word, ZIP...) yahan drop karo ya tap karke chuno<br><small>Ctrl+V paste bhi chalega &middot; max 15 MB per file</small>
+    </div>
+    <input id="files" type="file" multiple hidden>
+    <div class="thumbs" id="thumbs"></div>
+
+    <button class="send" id="send"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M2.5 11.3 20.7 3.6c.9-.4 1.8.5 1.4 1.4L14.4 21.2c-.4.9-1.7.8-2-.1l-2-6.1-6.1-2c-.9-.3-1-1.6-.1-1.9z"/></svg><span id="sendtxt">Send to WhatsApp</span></button>
+    <div class="bar" id="bar"><b id="barfill"></b></div>
+    <div class="status" id="status" role="status" aria-live="polite"></div>
+    <ul id="res"></ul>
+  </section>
+
+  <!-- VIEW MODE (?t=token) -->
+  <section id="viewView" hidden><div class="status" id="vstatus">Greetings load ho rahi hain...</div><div id="gl"></div></section>
+
+  <footer>Made with ♥ by <strong>Siddhesh Chandrakant Sangale</strong></footer>
+</main>
+<button class="inst" id="inst" type="button" hidden>📲 App install karo</button>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, addDoc, serverTimestamp, doc, setDoc, getDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+/* ====== CONFIG ====== */
+const firebaseConfig = { apiKey: "AIzaSyBcXm5QQaYCCddVXNgGqTBAszdKEK-0PJQ", authDomain: "multi-service-app-77dd8.firebaseapp.com", projectId: "multi-service-app-77dd8", storageBucket: "multi-service-app-77dd8.appspot.com", messagingSenderId: "123732555482", appId: "1:123732555482:web:ea47c825e0dbb504f597e3" };
+const CLOUDINARY = { cloudName: "dbirgrdbp", uploadPreset: "ml_default", folder: "greetings" };
+const ULTRA = { base: "https://api.ultramsg.com/instance192669", token: "xnbaeejigdwjjij1" };
+const SALT = "greetings-siddhesh-2026";            // change mat karna, warna purane links band ho jayenge
+const COL_PORTAL = "greet_portal";                 // alag collection (practical wale se different)
+const COL_LOG = "greet_shares";                    // alag collection
+const CREDIT = "_Developed by Siddhesh Chandrakant Sangale_";
+const LINE = "━━━━━━━━━━━━━━";
+const GAP_MS = 1500;                               // do logon ke beech ka gap (spam block se bachne ke liye)
+const MAX_PEOPLE = 50;
+/* ==================== */
+
+const OCC = [
+ {n:"Birthday",e:"🎂",h:"Happy Birthday!",t:"Aaj ka din tera, party bhi teri!",m:[
+  "Happy Birthday {name}! 🎉🎂\nAaj ka din tera, party bhi teri, cake bhi teri – bas treat mat bhoolna! 😎🔥\nYe saal dher saari khushiyan, success aur masti lekar aaye! 🥳💖",
+  "🎈 Janamdin ki dher saari shubhkamnayein, {name}! 🎈\nTu aise hi hasta rahe, chamakta rahe aur sabka dil jeetta rahe. 🌟\nAaj to full on enjoy karna hai! 🍰🎁",
+  "Oye {name}, HAPPY BIRTHDAY! 🥳🎂\nEk saal aur bada ho gaya, par dil se abhi bhi bachcha hai tu 😂💫\nGod bless you, hamesha khush reh! 🙏✨"]},
+ {n:"Good Morning",e:"🌞",h:"Good Morning!",t:"Naya din, nayi umeed, nayi energy!",m:[
+  "Good Morning {name}! ☀️🌸\nNaya din, nayi umeed, nayi energy! Aaj ka din tumhare liye bahut mast jaye. 💪😊",
+  "🌅 Suprabhat {name}! 🌅\nChai pi lo, smile kar lo, aur din ko jeet lo! ☕😄\nHave a fantastic day! ✨",
+  "Subah ki pehli kiran tumhare liye khushiyan laaye, {name}! 🌻\nGood Morning, aaj ka din dhamaal ho! 🔥"]},
+ {n:"Diwali",e:"🪔",h:"Happy Diwali!",t:"Diyon ki roshni se ghar jagmagaye!",m:[
+  "🪔 Happy Diwali {name}! 🪔\nDiye ki roshni se aapka ghar jagmagaye, Lakshmi maa ki kripa hamesha bani rahe! ✨🎆\nShubh Deepavali! 💛",
+  "✨ Shubh Deepavali, {name}! ✨\nMithai khao, patake jalao (par safely 😉), aur parivar ke saath khushiyan bantao! 🎇🍬🪔",
+  "Diwali ki dher saari shubhkamnayein {name}! 🎆\nAapki zindagi rangoli jaisi rangeen aur diye jaisi roshan ho! 🌟🪔"]},
+ {n:"Eid",e:"🌙",h:"Eid Mubarak!",t:"Khushiyan aur barkat aapke naam!",m:[
+  "🌙 Eid Mubarak {name}! 🌙\nAllah aapki har dua qubool kare aur zindagi khushiyon se bhar de. 🤲✨\nSheer khurma ka intezaar rahega! 😋",
+  "Eid Mubarak {name}! 🕌💚\nYe Eid aapke ghar mein barkat, mohabbat aur dher saari khushiyan laaye. 🌟🤗"]},
+ {n:"New Year",e:"🎆",h:"Happy New Year!",t:"Naya saal, naye sapne, naye goals!",m:[
+  "🎆 Happy New Year {name}! 🎆\nNaya saal, naye sapne, naye goals – is saal sab kuch haasil ho! 🚀💪\nCheers to a mast year ahead! 🥂",
+  "Naye saal ki dher saari shubhkamnayein, {name}! 🎉\nPichle saal ki yaadein saath rakho, aur naye saal mein dhamaal macha do! 🔥✨"]},
+ {n:"Anniversary",e:"💞",h:"Happy Anniversary!",t:"Saath aise hi mazboot rahe!",m:[
+  "💞 Happy Anniversary {name}! 💞\nAapka saath aise hi mazboot rahe, pyaar din-b-din badhta rahe! 🥰🌹",
+  "Anniversary ki hardik badhai {name}! 💐\nEk dusre ka haath thaame yunhi chalte raho, hamesha khush raho! ❤️✨"]},
+ {n:"Congratulations",e:"🏆",h:"Congratulations!",t:"Teri mehnat rang laayi!",m:[
+  "🏆 Congratulations {name}! 🏆\nTeri mehnat rang laayi, mujhe tujh par bahut garv hai! 👏🔥\nAise hi aage badhta reh! 🚀",
+  "{name}, CONGRATS! 🎉🥳\nTune kar dikhaya – ab treat to banti hai! 😎🍕"]},
+ {n:"Friendship",e:"🤝",h:"Dosti Zindabad!",t:"Tere jaisa dost naseeb se milta hai!",m:[
+  "Yaar {name}, tu mere liye bohot khaas hai! 🤗💛\nTere jaisa dost milna naseeb ki baat hai. Hamesha saath rehna! 🤝✨",
+  "Dosti ka rishta sabse mast hota hai, {name}! 😎\nChahe kuch bhi ho jaye, apni dosti pakki! 💪🔥"]},
+ {n:"Thank You",e:"🙏",h:"Thank You!",t:"Dil se shukriya!",m:[
+  "Thank you so much {name}! 🙏💖\nTumhari madad aur saath ke liye dil se shukriya. Tum jaise log kamaal hote hain! ✨",
+  "Shukriya {name}! 🌸\nTumne jo kiya uske liye main hamesha aabhari rahunga. 🤗🙏"]},
+ {n:"Get Well",e:"💐",h:"Get Well Soon!",t:"Jaldi theek ho jao, hum saath hain!",m:[
+  "Get well soon {name}! 💐🤗\nAaram karo, khayal rakho, jaldi theek ho jao – hum sab tumhare saath hain! 💪❤️"]},
+ {n:"Ganpati",e:"🐘",h:"Ganpati Bappa Morya!",t:"Bappa saare vighna door kare!",m:[
+  "🙏 Ganpati Bappa Morya! 🙏\n{name}, Bappa aapke jeevan se saare vighna door kare aur khushiyan bhar de! 🐘🌺✨\nMangalmurti Morya! 🚩"]},
+ {n:"Raksha Bandhan",e:"🧿",h:"Happy Raksha Bandhan!",t:"Ye bandhan hamesha mazboot rahe!",m:[
+  "Happy Raksha Bandhan {name}! 🧿💖\nBhai-behen ka pyaar anmol hai, ye bandhan hamesha mazboot rahe! 🎀🤗"]},
+ {n:"Love",e:"❤️",h:"Just For You",t:"Tu bohot special hai mere liye!",m:[
+  "{name}, tu meri zindagi ki sabse khoobsurat wajah hai! ❤️🌹\nBas itna kehna tha – tu bohot special hai mere liye. 🥰✨"]}
+];
+const TPL = [
+ {n:"Sunset",c1:"#ff5f8f",c2:"#ff8a3d",ink:"#ffffff",ac:"#ffe9a8",d:"circles"},
+ {n:"Royal",c1:"#1b1464",c2:"#6a2bd9",ink:"#ffffff",ac:"#ffc94d",d:"stars"},
+ {n:"Mint",c1:"#0f9b8e",c2:"#8af2b0",ink:"#06352f",ac:"#ffffff",d:"circles"},
+ {n:"Midnight",c1:"#070b1e",c2:"#243b8a",ink:"#ffffff",ac:"#7fd8ff",d:"stars"},
+ {n:"Diya",c1:"#4a0d1e",c2:"#e8631a",ink:"#fff3d6",ac:"#ffd45e",d:"circles"},
+ {n:"Blush",c1:"#fff0f4",c2:"#ffd3e0",ink:"#6b1d3a",ac:"#d6336c",d:"frame"},
+ {n:"Ocean",c1:"#0077b6",c2:"#90e0ef",ink:"#ffffff",ac:"#fff3a8",d:"circles"},
+ {n:"Gold",c1:"#0d0d0d",c2:"#2b2113",ink:"#f5e6c0",ac:"#ffc94d",d:"frame"}
+];
+
+const db = getFirestore(initializeApp(firebaseConfig));
+const $ = id => document.getElementById(id);
+const st = $("status"), bar = $("bar"), fill = $("barfill"), sendBtn = $("send");
+const say = (m, c = "") => { st.textContent = m; st.className = "status " + c; };
+const progress = p => { bar.style.display = "block"; fill.style.width = p + "%"; };
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const tokenFor = async to => { const b = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(to + "|" + SALT)); return [...new Uint8Array(b)].map(x => x.toString(16).padStart(2, "0")).join("").slice(0, 32); };
+const normalizeNumber = raw => { const d = raw.replace(/\D/g, ""); if (d.length === 10) return "91" + d; if (d.length === 12 && d.startsWith("91")) return d; if (d.length === 11 && d.startsWith("0")) return "91" + d.slice(1); return null; };
+
+/* ===== VIEW MODE ===== */
+const tParam = new URLSearchParams(location.search).get("t");
+if (tParam) {
+  $("sendView").hidden = true; $("viewView").hidden = false;
+  $("h1").innerHTML = "Tumhare <em>Greetings</em>"; $("sub").textContent = "Tumhare liye bheji gayi saari greetings aur photos yahan hain. 💌";
+  (async () => {
+    try {
+      const s = await getDoc(doc(db, COL_PORTAL, tParam));
+      const items = s.exists() ? (s.data().items || []).slice().sort((a, b) => b.at - a.at) : [];
+      if (!items.length) { $("vstatus").textContent = "Abhi koi greeting nahi mili."; return; }
+      $("vstatus").textContent = "";
+      items.forEach(it => {
+        const c = document.createElement("article"); c.className = "gcard";
+        const h = document.createElement("h2"); h.textContent = `${it.emoji || "💌"} ${it.occasion || "Greeting"}`;
+        const p = document.createElement("p"); p.textContent = it.message || "";
+        c.append(h, p);
+        if (it.from) { const f = document.createElement("p"); f.textContent = "— " + it.from + " 💌"; c.append(f); }
+        if ((it.images || []).length) {
+          const g = document.createElement("div"); g.className = "ph";
+          it.images.filter(u => /^https:\/\//.test(u)).forEach(u => { const a = document.createElement("a"); a.href = u; a.target = "_blank"; a.rel = "noopener"; const im = document.createElement("img"); im.src = u; im.alt = "Photo"; im.loading = "lazy"; a.append(im); g.append(a); });
+          c.append(g);
+        }
+        (it.files || []).filter(f => /^https:\/\//.test(f.url)).forEach(f => { const a = document.createElement("a"); a.href = f.url; a.target = "_blank"; a.rel = "noopener"; a.textContent = "📎 " + f.name; a.style.cssText = "display:block;color:var(--gold);margin-top:8px;word-break:break-all"; c.append(a); });
+        const d = document.createElement("small"); d.textContent = new Date(it.at).toLocaleString(); c.append(d);
+        $("gl").append(c);
+      });
+    } catch (e) { $("vstatus").textContent = "Greetings load nahi ho payi. Dobara try karo."; }
+  })();
+}
+
+/* ===== CARD TEMPLATES (canvas) ===== */
+const rnd = n => { n = Math.sin(n * 12.9898) * 43758.5453; return n - Math.floor(n); };
+function fit(ctx, text, font, maxW, start) { let s = start; do { ctx.font = font(s); if (ctx.measureText(text).width <= maxW) break; s -= 4; } while (s > 28); return s; }
+function wrapLines(ctx, text, maxW) { const w = text.split(" "), out = []; let l = ""; w.forEach(x => { const t = l ? l + " " + x : x; if (ctx.measureText(t).width > maxW && l) { out.push(l); l = x; } else l = t; }); if (l) out.push(l); return out; }
+function drawCard(cv, t, o, name, from, s) {
+  const S = 1080; cv.width = cv.height = Math.round(S * s);
+  const c = cv.getContext("2d"); c.setTransform(s, 0, 0, s, 0, 0);
+  const g = c.createLinearGradient(0, 0, S, S); g.addColorStop(0, t.c1); g.addColorStop(1, t.c2); c.fillStyle = g; c.fillRect(0, 0, S, S);
+  if (t.d === "stars") { for (let i = 0; i < 70; i++) { c.globalAlpha = .25 + rnd(i + 3) * .6; c.fillStyle = t.ac; c.beginPath(); c.arc(rnd(i) * S, rnd(i + 99) * S, 2 + rnd(i + 7) * 5, 0, 7); c.fill(); } }
+  if (t.d === "circles") { [[160, 140, 360], [940, 260, 300], [880, 960, 420], [100, 900, 260]].forEach(([x, y, r], i) => { c.globalAlpha = .13; c.fillStyle = i % 2 ? t.ac : "#fff"; c.beginPath(); c.arc(x, y, r, 0, 7); c.fill(); }); }
+  c.globalAlpha = 1;
+  if (t.d === "frame") { c.strokeStyle = t.ac; c.lineWidth = 8; c.strokeRect(36, 36, S - 72, S - 72); c.lineWidth = 2; c.strokeRect(58, 58, S - 116, S - 116); }
+  c.textAlign = "center"; c.textBaseline = "alphabetic";
+  c.font = "170px serif"; c.fillStyle = t.ink; c.fillText(o.e, S / 2, 270);
+  c.fillStyle = t.ink; fit(c, o.h, z => `700 ${z}px Fraunces,serif`, 900, 112); c.fillText(o.h, S / 2, 470);
+  c.fillStyle = t.ac; fit(c, name, z => `italic 700 ${z}px Fraunces,serif`, 900, 150); c.fillText(name, S / 2, 650);
+  c.fillStyle = t.ink; c.globalAlpha = .92; c.font = "500 46px Hind,sans-serif";
+  wrapLines(c, o.t, 820).slice(0, 3).forEach((l, i) => c.fillText(l, S / 2, 770 + i * 62));
+  c.globalAlpha = 1;
+  if (from) { c.fillStyle = t.ac; c.font = "italic 700 52px Fraunces,serif"; c.fillText("— " + from, S / 2, 985); }
+  c.globalAlpha = .55; c.fillStyle = t.ink; c.font = "500 26px Hind,sans-serif"; c.fillText("Siddhesh Chandrakant Sangale", S / 2, 1038); c.globalAlpha = 1;
+}
+
+/* ===== UI STATE ===== */
+let cur = -1, mi = 0, tpl = -1, images = [];
+const msg = $("msg"), occBox = $("occs"), tplBox = $("tpls"), rcps = $("rcps");
+const curOcc = () => cur >= 0 ? OCC[cur] : { n: "Greeting", e: "💌", h: "Greetings!", t: "Tumhare liye ek chhota sa tohfa!", m: [] };
+const firstName = () => (rcps.querySelector(".rn")?.value.trim()) || "Rahul";
+
+OCC.forEach((o, i) => { const b = document.createElement("button"); b.type = "button"; b.className = "occ"; b.setAttribute("aria-pressed", "false"); b.textContent = o.e + " " + o.n; b.onclick = () => pick(i); occBox.append(b); });
+const noneB = document.createElement("button"); noneB.type = "button"; noneB.className = "tpl none"; noneB.setAttribute("aria-pressed", "true"); noneB.textContent = "Sirf text (card nahi)"; noneB.onclick = () => selTpl(-1); tplBox.append(noneB);
+const tCanv = TPL.map((t, i) => { const b = document.createElement("button"); b.type = "button"; b.className = "tpl"; b.setAttribute("aria-pressed", "false"); const cv = document.createElement("canvas"); const sp = document.createElement("span"); sp.textContent = t.n; b.append(cv, sp); b.onclick = () => selTpl(i); tplBox.append(b); return cv; });
+function redraw() { const o = curOcc(), n = firstName(), f = $("from").value.trim(); tCanv.forEach((cv, i) => drawCard(cv, TPL[i], o, n, f, .26)); }
+function selTpl(i) { tpl = i; [...tplBox.children].forEach((b, k) => b.setAttribute("aria-pressed", String(k === i + 1))); }
+function fillMsg() { const o = OCC[cur]; msg.value = o.m[mi % o.m.length]; }
+function pick(i) { cur = i; mi = Math.floor(Math.random() * OCC[i].m.length); [...occBox.children].forEach((b, k) => b.setAttribute("aria-pressed", String(k === i))); fillMsg(); redraw(); }
+$("shuf").onclick = () => { if (cur < 0) return say("Pehle occasion chuno.", "err"); mi++; fillMsg(); say(""); };
+$("from").addEventListener("input", redraw);
+(document.fonts ? Promise.all([document.fonts.load("700 80px Fraunces"), document.fonts.load("italic 700 80px Fraunces"), document.fonts.load("500 40px Hind")]).catch(() => {}) : Promise.resolve()).then(redraw);
+
+/* ===== RECIPIENTS ===== */
+function addRow(name = "", num = "") {
+  const r = document.createElement("div"); r.className = "rcp";
+  const a = document.createElement("input"); a.className = "rn"; a.placeholder = "Naam"; a.autocomplete = "off"; a.value = name;
+  const b = document.createElement("input"); b.className = "rp"; b.type = "tel"; b.inputMode = "numeric"; b.placeholder = "WhatsApp number"; b.maxLength = 15; b.autocomplete = "off"; b.value = num;
+  const x = document.createElement("button"); x.type = "button"; x.textContent = "×"; x.setAttribute("aria-label", "Hatao");
+  x.onclick = () => { if (rcps.children.length > 1) r.remove(); else { a.value = ""; b.value = ""; } count(); redraw(); };
+  r.append(a, b, x); rcps.append(r);
+}
+function count() { const n = [...rcps.children].filter(r => r.querySelector(".rn").value.trim() || r.querySelector(".rp").value.trim()).length; $("cnt").textContent = n > 1 ? `${n} log select hain` : ""; }
+rcps.addEventListener("input", e => { count(); if (e.target.classList.contains("rn")) redraw(); });
+addRow();
+$("addR").onclick = () => { addRow(); rcps.lastChild.querySelector(".rn").focus(); };
+$("pasteB").onclick = () => { $("pasteBox").hidden = !$("pasteBox").hidden; };
+$("plistAdd").onclick = () => {
+  const lines = $("plist").value.split("\n").map(l => l.trim()).filter(Boolean); let n = 0;
+  lines.forEach(l => {
+    let m = l.match(/^(.+?)[\s,;:|\-–]*(\+?\d[\d\s]{8,15}\d)\s*$/), name, num;
+    if (m) { name = m[1]; num = m[2]; } else { m = l.match(/^(\+?\d[\d\s]{8,15}\d)[\s,;:|\-–]+(.+)$/); if (m) { num = m[1]; name = m[2]; } }
+    if (name && num) { const first = rcps.children.length === 1 && !rcps.querySelector(".rn").value && !rcps.querySelector(".rp").value ? rcps.firstChild : null; if (first) first.remove(); addRow(name.trim(), num.replace(/\s+/g, "")); n++; }
+  });
+  say(n ? `${n} log add hue.` : "Koi line samajh nahi aayi. Format: Naam 9876543210", n ? "ok" : "err");
+  if (n) { $("plist").value = ""; $("pasteBox").hidden = true; } count(); redraw();
+};
+function collect() {
+  const out = [], errs = [], seen = new Set();
+  [...rcps.children].forEach((r, i) => {
+    const name = r.querySelector(".rn").value.trim(), raw = r.querySelector(".rp").value.trim();
+    if (!name && !raw) return;
+    if (!name) { errs.push(`Row ${i + 1}: naam daalo`); return; }
+    const to = normalizeNumber(raw);
+    if (!to) { errs.push(`${name}: number galat hai`); return; }
+    if (seen.has(to)) return; seen.add(to); out.push({ name, to });
+  });
+  return { out, errs };
+}
+
+/* ===== PHOTOS ===== */
+const MAX_MB = 15;
+const isImg = f => f.type.startsWith("image/");
+function addFiles(list) {
+  [...list].forEach(f => {
+    if (f.size > MAX_MB * 1024 * 1024) return say(`"${f.name}" ${MAX_MB} MB se badi hai.`, "err");
+    images.push(f);
+  });
+  renderThumbs();
+}
+function renderThumbs() {
+  const box = $("thumbs"); box.innerHTML = "";
+  images.forEach((f, i) => {
+    const d = document.createElement("div"); d.className = "thumb";
+    let img;
+    if (isImg(f)) { img = document.createElement("img"); img.src = URL.createObjectURL(f); img.alt = f.name; }
+    else { img = document.createElement("div"); img.className = "chip"; const ext = document.createElement("b"); ext.textContent = (f.name.split(".").pop() || "file").slice(0, 5).toUpperCase(); const nm = document.createElement("span"); nm.textContent = f.name; img.append(ext, nm); }
+    const x = document.createElement("button"); x.type = "button"; x.textContent = "×"; x.setAttribute("aria-label", "Remove");
+    x.onclick = () => { images.splice(i, 1); renderThumbs(); };
+    d.append(img, x); box.append(d);
+  });
+}
+const drop = $("drop"), picker = $("files");
+drop.onclick = () => picker.click();
+drop.onkeydown = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); picker.click(); } };
+picker.onchange = () => { addFiles(picker.files); picker.value = ""; };
+["dragenter", "dragover"].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add("over"); }));
+["dragleave", "drop"].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove("over"); }));
+drop.addEventListener("drop", e => addFiles(e.dataTransfer.files));
+document.addEventListener("paste", e => { const f = [...(e.clipboardData?.files || [])]; if (f.length) addFiles(f); });
+
+/* ===== SERVICES ===== */
+async function upload(file, fname) {
+  const fd = new FormData(); fd.append("file", file, fname || file.name); fd.append("upload_preset", CLOUDINARY.uploadPreset); fd.append("folder", CLOUDINARY.folder);
+  const r = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY.cloudName}/auto/upload`, { method: "POST", body: fd });
+  const j = await r.json();
+  if (!r.ok || !j.secure_url) throw new Error("Upload fail: " + (j.error?.message || r.status));
+  return j.secure_url;
+}
+async function ultra(endpoint, params) {
+  const r = await fetch(`${ULTRA.base}/messages/${endpoint}`, { method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded" }, body: new URLSearchParams({ token: ULTRA.token, ...params }) });
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok || j.error) throw new Error("WhatsApp send fail: " + (typeof j.error === "string" ? j.error : JSON.stringify(j.error || r.status)));
+  return j;
+}
+
+/* ===== SEND ===== */
+sendBtn.onclick = async () => {
+  const { out: people, errs } = collect(), from = $("from").value.trim(), text = msg.value.trim();
+  if (errs.length) return say(errs[0], "err");
+  if (!people.length) return say("Kam se kam ek naam aur number daalo.", "err");
+  if (people.length > MAX_PEOPLE) return say(`Ek baar mein max ${MAX_PEOPLE} log.`, "err");
+  if (!text) return say("Occasion chuno ya apna message likho.", "err");
+  if (people.length > 1 && !confirm(`${people.length} logon ko bhejna hai. Sab ko naam ke saath alag-alag message jayega. Continue?`)) return;
+
+  const o = curOcc(), res = $("res"); res.innerHTML = "";
+  const lis = people.map(p => { const li = document.createElement("li"); li.className = "wait"; li.textContent = `⏳ ${p.name} (+${p.to})`; res.append(li); return li; });
+  sendBtn.disabled = true; bar.style.display = "none"; progress(2);
+  let ok = 0;
+
+  try {
+    const urls = [];
+    for (let i = 0; i < images.length; i++) { say(`Upload ho raha hai ${i + 1}/${images.length}...`); urls.push({ url: await upload(images[i]), name: images[i].name, img: isImg(images[i]) }); }
+
+    for (let k = 0; k < people.length; k++) {
+      const { name, to } = people[k], li = lis[k];
+      say(`Bhej rahe hain ${k + 1}/${people.length}: ${name}...`);
+      try {
+        const finalText = text.replaceAll("{name}", name);
+        const hasAtt = urls.length > 0;   // link sirf tab jab photo/file ho
+        let link = null, token = null;
+        if (hasAtt) { token = await tokenFor(to); link = new URL(location.pathname.split("/").pop() || "greetings.html", location.href); link.search = "?t=" + token; }
+
+        let cardUrl = null;
+        if (tpl >= 0) {
+          const cv = document.createElement("canvas"); drawCard(cv, TPL[tpl], o, name, from, 1);
+          const blob = await new Promise(r => cv.toBlob(r, "image/jpeg", .92));
+          cardUrl = await upload(blob, "card.jpg");
+        }
+        const imgUrls = urls.filter(u => u.img).map(u => u.url), fileList = urls.filter(u => !u.img).map(u => ({ name: u.name, url: u.url }));
+        const allImgs = (cardUrl ? [cardUrl] : []).concat(imgUrls);
+
+        if (hasAtt) {
+          try { await setDoc(doc(db, COL_PORTAL, token), { receiverName: name, receiverNumber: "+" + to, items: arrayUnion({ occasion: o.n, emoji: o.e, message: finalText, from, images: allImgs, files: fileList, at: Date.now() }) }, { merge: true }); }
+          catch (err) { console.warn("Portal save failed:", err); }
+        }
+
+        if (cardUrl) { await ultra("image", { to, image: cardUrl, caption: `${o.e} *${o.h}* ${o.e}` }); await sleep(600); }
+        const body = (cardUrl ? "" : `${o.e} *${o.n}* ${o.e}\n${LINE}\n\n`) + `${finalText}\n\n` + (from ? `— *${from}* 💌\n\n` : "") + `${LINE}\n` + (hasAtt ? `🔗 *Photos & files yahan dekho (HD download):*\n${link.href}\n\n` : "") + CREDIT;
+        await ultra("chat", { to, body });
+        for (let i = 0; i < urls.length; i++) {
+          await sleep(600); const u = urls[i], n = urls.length > 1 ? ` ${i + 1}/${urls.length}` : "";
+          if (u.img) await ultra("image", { to, image: u.url, caption: `🖼️ *Photo${n}* ${o.e}` });
+          else await ultra("document", { to, document: u.url, filename: u.name, caption: `📎 *File${n}*` });
+        }
+
+        addDoc(collection(db, COL_LOG), { receiverName: name, receiverNumber: "+" + to, occasion: o.n, template: tpl >= 0 ? TPL[tpl].n : "none", message: finalText, from, images: allImgs, files: fileList, linkSent: hasAtt, createdAt: serverTimestamp() }).catch(err => console.warn("Log save failed:", err));
+        li.className = "ok"; li.textContent = `✅ ${name} (+${to})`; ok++;
+      } catch (e) { console.error(e); li.className = "bad"; li.textContent = `❌ ${name} (+${to}): ${e.message}`; }
+      progress(Math.round((k + 1) / people.length * 100));
+      if (k < people.length - 1) await sleep(GAP_MS);
+    }
+
+    say(ok === people.length ? `✅ Sabko bhej diya (${ok}/${people.length})!` : `${ok}/${people.length} bheje gaye. Upar dekho kaun fail hua.`, ok === people.length ? "ok" : "err");
+    if (ok === people.length) { msg.value = ""; cur = -1; [...occBox.children].forEach(b => b.setAttribute("aria-pressed", "false")); images = []; renderThumbs(); redraw(); }
+    $("sendtxt").textContent = "Sent ✓"; setTimeout(() => { $("sendtxt").textContent = "Send to WhatsApp"; }, 2500);
+  } catch (e) { console.error(e); say(e.message || "Kuch gadbad ho gayi, dobara try karo.", "err"); }
+  finally { sendBtn.disabled = false; }
+};
+
+/* ===== PWA ===== */
+if ("serviceWorker" in navigator) addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
+let dip; const inst = $("inst");
+addEventListener("beforeinstallprompt", e => { e.preventDefault(); dip = e; inst.hidden = false; });
+inst.onclick = async () => { if (!dip) return; dip.prompt(); await dip.userChoice; dip = null; inst.hidden = true; };
+addEventListener("appinstalled", () => { inst.hidden = true; });
+</script>
+</body>
+</html>
