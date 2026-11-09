@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Greeting Share – Mast Greetings, Cards & Photos straight to WhatsApp</title>
+<title>Greeting Share – Beautiful Greetings, Cards & Photos straight to WhatsApp</title>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#1a0f24">
 <meta name="mobile-web-app-capable" content="yes">
@@ -45,14 +45,23 @@ input,textarea{width:100%;font:inherit;color:var(--ink);background:rgba(20,8,30,
 input::placeholder,textarea::placeholder{color:#8b719296}
 input:focus,textarea:focus{outline:0;border-color:var(--gold);box-shadow:0 0 0 4px rgba(255,201,77,.15)}
 textarea{min-height:170px;resize:vertical;line-height:1.6}
-button:focus-visible,.drop:focus-visible,.occ:focus-visible,.tpl:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
-.occs{display:flex;flex-wrap:wrap;gap:8px}
+button:focus-visible,.drop:focus-visible,.occ:focus-visible,.tpl:focus-visible,.cat:focus-visible,summary:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.cats{display:flex;gap:6px;overflow-x:auto;padding-bottom:8px;margin-bottom:6px;scrollbar-width:thin}
+.cat{flex:none;font:600 13.5px 'Hind',sans-serif;color:var(--muted);background:none;border:0;border-bottom:2px solid transparent;padding:6px 10px;cursor:pointer}
+.cat[aria-pressed=true]{color:var(--gold);border-color:var(--gold)}
+.occs{display:flex;flex-wrap:wrap;gap:8px;max-height:230px;overflow-y:auto;padding:2px}
 .occ{font:500 14px 'Hind',sans-serif;color:var(--ink);background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:99px;padding:7px 13px;cursor:pointer;transition:background .15s,border-color .15s,transform .15s}
 .occ:hover{border-color:var(--gold)}
 .occ[aria-pressed=true]{background:linear-gradient(135deg,var(--rose),var(--orange));border-color:transparent;color:#fff;transform:scale(1.04)}
 .ghost{background:none;border:1px dashed var(--line);color:var(--gold);border-radius:10px;padding:8px 14px;font:500 14px 'Hind',sans-serif;cursor:pointer}
 .ghost:hover{border-color:var(--gold)}
 .ghost+.ghost{margin-left:6px}
+details.cz{margin-top:14px;border:1px solid var(--line);border-radius:14px;padding:4px 14px;background:rgba(255,255,255,.03)}
+details.cz summary{cursor:pointer;padding:10px 0;color:var(--gold);font-weight:600}
+.czg{display:grid;grid-template-columns:1fr 90px;gap:8px;padding-bottom:12px}
+.czg label{margin:6px 0 4px}
+.czg .full{grid-column:1/-1}
+input[type=color]{padding:3px;height:44px;cursor:pointer}
 .rcp{display:grid;grid-template-columns:1fr 1fr 40px;gap:8px;margin-bottom:8px}
 .rcp button{border:1px solid var(--line);background:rgba(255,255,255,.05);color:var(--ink);border-radius:12px;font-size:20px;cursor:pointer}
 @media(max-width:520px){.rcp{grid-template-columns:1fr 1fr 38px}}
@@ -92,6 +101,16 @@ footer strong{color:var(--gold);font-size:16px}
 .gcard small{display:block;margin-top:10px;color:var(--muted)}
 .chip{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:8px;height:100%;text-align:center;font-size:12px;color:var(--muted);word-break:break-all}.chip b{font:700 13px 'Hind',sans-serif;color:var(--gold);background:rgba(255,201,77,.14);border-radius:6px;padding:3px 7px}.chip span{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .inst{position:fixed;right:14px;bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:5;padding:11px 16px;border:0;border-radius:99px;background:linear-gradient(135deg,var(--rose),var(--orange));color:#fff;font:600 15px 'Hind',sans-serif;box-shadow:0 10px 30px -8px rgba(255,95,143,.7);cursor:pointer}
+.fest{margin:0 0 18px;padding:14px 16px;border-radius:16px;border:1px solid var(--line);background:linear-gradient(120deg,rgba(255,95,143,.22),rgba(255,138,61,.18))}
+.fest>b{color:var(--gold);display:block;margin-bottom:4px}
+.fest .row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;padding:5px 0}
+.langs{display:flex;flex-wrap:wrap;gap:8px}
+.panel{margin-top:10px;padding:12px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.03)}
+.panel .grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0}
+.ctl{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--line);font-size:14px}
+.chk{display:flex;gap:10px;align-items:flex-start;margin-top:16px;color:var(--muted);font-size:14px}
+.chk input{width:auto;margin-top:5px}
+#res a{color:var(--gold);margin-left:6px;font-weight:600}
 [hidden]{display:none!important}
 @media(prefers-reduced-motion:reduce){*,*::after{animation:none!important;transition:none!important}}
 </style>
@@ -100,7 +119,7 @@ footer strong{color:var(--gold);font-size:16px}
 <div class="glow" aria-hidden="true"><i></i><i></i><i></i></div>
 <main class="wrap">
   <h1 id="h1">Greeting <em>Share</em></h1>
-  <p class="sub" id="sub">Occasion chuno, card template lagao, photos jodo – ek ya kai logon ke WhatsApp pe naam ke saath seedha bhejo. 🎉</p>
+  <p class="sub" id="sub">Pick an occasion, add a card template, attach photos – and send it straight to one or many WhatsApp chats, personalised with each name. 🎉</p>
 
   <section class="dev" aria-label="Developer">
     <div class="avatar"><span>SS</span></div>
@@ -109,36 +128,69 @@ footer strong{color:var(--gold);font-size:16px}
 
   <!-- SEND MODE -->
   <section class="card" id="sendView">
-    <label style="margin-top:0">Kisko bhejna hai <i>*</i> <span>(naam + WhatsApp number, ek ya zyada)</span></label>
+    <div class="fest" id="fest" hidden></div>
+    <label style="margin-top:0">Who do you want to send to? <i>*</i> <span>(name + WhatsApp number, one or more)</span></label>
     <div id="rcps"></div>
-    <div><button class="ghost" id="addR" type="button">＋ Aur person jodo</button><button class="ghost" id="pasteB" type="button">📋 List paste karo</button></div>
+    <div><button class="ghost" id="addR" type="button">＋ Add another person</button><button class="ghost" id="pasteB" type="button">📋 Paste a list</button><button class="ghost" id="contactsB" type="button">👥 Saved contacts</button></div>
     <div id="pasteBox" hidden>
-      <textarea id="plist" placeholder="Har line mein ek: naam aur number&#10;Rahul 9876543210&#10;Sneha, 9123456780"></textarea>
-      <button class="ghost" id="plistAdd" type="button">List mein add karo</button>
+      <textarea id="plist" placeholder="One per line: name and number&#10;Rahul 9876543210&#10;Sneha, 9123456780"></textarea>
+      <button class="ghost" id="plistAdd" type="button">Add to list</button>
     </div>
     <div class="cnt" id="cnt"></div>
+    <div class="panel" id="cpanel" hidden>
+      <div class="cnt" style="margin:0 0 8px">Saved on this device only. Tap a group to add everyone in it.</div>
+      <div class="occs" id="gchips" style="max-height:none"></div>
+      <div class="grid">
+        <input id="cn" placeholder="Name"><input id="cp" type="tel" inputmode="numeric" placeholder="WhatsApp number">
+        <input id="cg" list="glist" placeholder="Group (e.g. Family)" style="grid-column:1/-1"><datalist id="glist"></datalist>
+        <div><label for="cb" style="margin:0 0 4px">Birthday</label><input id="cb" type="date"></div>
+        <div><label for="ca" style="margin:0 0 4px">Anniversary</label><input id="ca" type="date"></div>
+      </div>
+      <button class="ghost" id="cAdd" type="button">＋ Save contact</button><button class="ghost" id="cSaveRcp" type="button">💾 Save current recipients to a group</button>
+      <div id="clist" style="margin-top:10px"></div>
+    </div>
 
-    <label for="from">Tumhara naam <span>(optional, "From" mein dikhega)</span></label>
+    <label for="from">Your name <span>(optional, shown as "From")</span></label>
     <input id="from" type="text" autocomplete="off" placeholder="e.g. Siddhesh">
 
+    <label>Greeting language</label>
+    <div class="langs" id="langs" role="group" aria-label="Greeting language"></div>
+    <div class="cnt" id="langHint"></div>
+
     <label>Occasion</label>
+    <div class="cats" id="cats" role="group" aria-label="Occasion category"></div>
     <div class="occs" id="occs" role="group" aria-label="Occasion"></div>
 
-    <label>Card template <span>(WhatsApp pe card image ban kar jayegi)</span></label>
+    <details class="cz">
+      <summary>✨ Customize card (optional)</summary>
+      <div class="czg">
+        <div><label for="ch">Card headline</label><input id="ch" type="text" maxlength="40" placeholder="e.g. Happy Birthday!"></div>
+        <div><label for="ce">Emoji</label><input id="ce" type="text" maxlength="4" placeholder="🎂"></div>
+        <div class="full"><label for="ct">Card tagline</label><input id="ct" type="text" maxlength="90" placeholder="A short line under the name"></div>
+        <div class="full"><label>Photo on card <span>(optional – replaces the emoji with a round photo)</span></label><button class="ghost" id="cpBtn" type="button">📷 Choose photo</button><button class="ghost" id="cpDel" type="button" hidden>Remove</button><input id="cpFile" type="file" accept="image/*" hidden></div>
+        <div><label for="cc">Accent colour</label><input id="cc" type="color" value="#ffc94d"></div>
+        <div style="align-self:end"><button class="ghost" id="czReset" type="button" style="width:100%;height:44px">Reset</button></div>
+      </div>
+    </details>
+
+    <label>Card template <span>(a card image will be sent on WhatsApp)</span></label>
     <div class="tpls" id="tpls" role="group" aria-label="Card template"></div>
 
-    <label for="msg">Greeting message <i>*</i> <span>(edit kar sakte ho, {name} har bande ka naam ban jayega)</span></label>
-    <textarea id="msg" placeholder="Occasion chuno, greeting yahan aa jayegi..."></textarea>
-    <button class="ghost" id="shuf" type="button" style="margin-top:8px">🔀 Doosri greeting dikhao</button>
+    <label for="msg">Greeting message <i>*</i> <span>(editable – {name} becomes each person's name)</span></label>
+    <textarea id="msg" placeholder="Pick an occasion and the greeting will appear here..."></textarea>
+    <button class="ghost" id="shuf" type="button" style="margin-top:8px">🔀 Show another greeting</button>
 
-    <label>Photos &amp; files <span>(optional, sabko same jayengi &middot; personal link tabhi jayega jab photo/file ho)</span></label>
-    <div class="drop" id="drop" tabindex="0" role="button" aria-label="Photo ya file chuno">
+    <label>Photos &amp; files <span>(optional, sent to everyone &middot; a personal link is included only if a photo/file is attached)</span></label>
+    <div class="drop" id="drop" tabindex="0" role="button" aria-label="Choose a photo or file">
       <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="1.8"/><path d="m21 15-5-5L5 21"/></svg>
-      Photo ya file (PDF, Word, ZIP...) yahan drop karo ya tap karke chuno<br><small>Ctrl+V paste bhi chalega &middot; max 15 MB per file</small>
+      Drop a photo or file (PDF, Word, ZIP...) here or tap to choose<br><small>Ctrl+V paste works too &middot; max 15 MB per file</small>
     </div>
     <input id="files" type="file" multiple hidden>
     <div class="thumbs" id="thumbs"></div>
 
+    <label class="chk"><input type="checkbox" id="manual"><span>Backup mode – don't use Ultramsg; give me WhatsApp links to send manually (also appears automatically if a send fails)</span></label>
+    <label for="when">Schedule for later <span>(optional – needs the scheduler function from the setup notes)</span></label>
+    <input id="when" type="datetime-local">
     <button class="send" id="send"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M2.5 11.3 20.7 3.6c.9-.4 1.8.5 1.4 1.4L14.4 21.2c-.4.9-1.7.8-2-.1l-2-6.1-6.1-2c-.9-.3-1-1.6-.1-1.9z"/></svg><span id="sendtxt">Send to WhatsApp</span></button>
     <div class="bar" id="bar"><b id="barfill"></b></div>
     <div class="status" id="status" role="status" aria-live="polite"></div>
@@ -146,11 +198,11 @@ footer strong{color:var(--gold);font-size:16px}
   </section>
 
   <!-- VIEW MODE (?t=token) -->
-  <section id="viewView" hidden><div class="status" id="vstatus">Greetings load ho rahi hain...</div><div id="gl"></div></section>
+  <section id="viewView" hidden><div class="status" id="vstatus">Loading your greetings...</div><div id="gl"></div></section>
 
   <footer>Made with ♥ by <strong>Siddhesh Chandrakant Sangale</strong></footer>
 </main>
-<button class="inst" id="inst" type="button" hidden>📲 App install karo</button>
+<button class="inst" id="inst" type="button" hidden>📲 Install app</button>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -160,55 +212,227 @@ import { getFirestore, collection, addDoc, serverTimestamp, doc, setDoc, getDoc,
 const firebaseConfig = { apiKey: "AIzaSyBcXm5QQaYCCddVXNgGqTBAszdKEK-0PJQ", authDomain: "multi-service-app-77dd8.firebaseapp.com", projectId: "multi-service-app-77dd8", storageBucket: "multi-service-app-77dd8.appspot.com", messagingSenderId: "123732555482", appId: "1:123732555482:web:ea47c825e0dbb504f597e3" };
 const CLOUDINARY = { cloudName: "dbirgrdbp", uploadPreset: "ml_default", folder: "greetings" };
 const ULTRA = { base: "https://api.ultramsg.com/instance192669", token: "xnbaeejigdwjjij1" };
-const SALT = "greetings-siddhesh-2026";            // change mat karna, warna purane links band ho jayenge
-const COL_PORTAL = "greet_portal";                 // alag collection (practical wale se different)
-const COL_LOG = "greet_shares";                    // alag collection
+const SALT = "greetings-siddhesh-2026";            // do not change, or old links will stop working
+const COL_PORTAL = "greet_portal";                 // separate collection
+const COL_LOG = "greet_shares";
+const COL_SCHED = "greet_schedule";                    // separate collection
 const CREDIT = "_Developed by Siddhesh Chandrakant Sangale_";
 const LINE = "━━━━━━━━━━━━━━";
-const GAP_MS = 1500;                               // do logon ke beech ka gap (spam block se bachne ke liye)
+const GAP_MS = 1500;                               // gap between people (avoids spam blocks)
 const MAX_PEOPLE = 50;
 /* ==================== */
 
-const OCC = [
- {n:"Birthday",e:"🎂",h:"Happy Birthday!",t:"Aaj ka din tera, party bhi teri!",m:[
-  "Happy Birthday {name}! 🎉🎂\nAaj ka din tera, party bhi teri, cake bhi teri – bas treat mat bhoolna! 😎🔥\nYe saal dher saari khushiyan, success aur masti lekar aaye! 🥳💖",
-  "🎈 Janamdin ki dher saari shubhkamnayein, {name}! 🎈\nTu aise hi hasta rahe, chamakta rahe aur sabka dil jeetta rahe. 🌟\nAaj to full on enjoy karna hai! 🍰🎁",
-  "Oye {name}, HAPPY BIRTHDAY! 🥳🎂\nEk saal aur bada ho gaya, par dil se abhi bhi bachcha hai tu 😂💫\nGod bless you, hamesha khush reh! 🙏✨"]},
- {n:"Good Morning",e:"🌞",h:"Good Morning!",t:"Naya din, nayi umeed, nayi energy!",m:[
-  "Good Morning {name}! ☀️🌸\nNaya din, nayi umeed, nayi energy! Aaj ka din tumhare liye bahut mast jaye. 💪😊",
-  "🌅 Suprabhat {name}! 🌅\nChai pi lo, smile kar lo, aur din ko jeet lo! ☕😄\nHave a fantastic day! ✨",
-  "Subah ki pehli kiran tumhare liye khushiyan laaye, {name}! 🌻\nGood Morning, aaj ka din dhamaal ho! 🔥"]},
- {n:"Diwali",e:"🪔",h:"Happy Diwali!",t:"Diyon ki roshni se ghar jagmagaye!",m:[
-  "🪔 Happy Diwali {name}! 🪔\nDiye ki roshni se aapka ghar jagmagaye, Lakshmi maa ki kripa hamesha bani rahe! ✨🎆\nShubh Deepavali! 💛",
-  "✨ Shubh Deepavali, {name}! ✨\nMithai khao, patake jalao (par safely 😉), aur parivar ke saath khushiyan bantao! 🎇🍬🪔",
-  "Diwali ki dher saari shubhkamnayein {name}! 🎆\nAapki zindagi rangoli jaisi rangeen aur diye jaisi roshan ho! 🌟🪔"]},
- {n:"Eid",e:"🌙",h:"Eid Mubarak!",t:"Khushiyan aur barkat aapke naam!",m:[
-  "🌙 Eid Mubarak {name}! 🌙\nAllah aapki har dua qubool kare aur zindagi khushiyon se bhar de. 🤲✨\nSheer khurma ka intezaar rahega! 😋",
-  "Eid Mubarak {name}! 🕌💚\nYe Eid aapke ghar mein barkat, mohabbat aur dher saari khushiyan laaye. 🌟🤗"]},
- {n:"New Year",e:"🎆",h:"Happy New Year!",t:"Naya saal, naye sapne, naye goals!",m:[
-  "🎆 Happy New Year {name}! 🎆\nNaya saal, naye sapne, naye goals – is saal sab kuch haasil ho! 🚀💪\nCheers to a mast year ahead! 🥂",
-  "Naye saal ki dher saari shubhkamnayein, {name}! 🎉\nPichle saal ki yaadein saath rakho, aur naye saal mein dhamaal macha do! 🔥✨"]},
- {n:"Anniversary",e:"💞",h:"Happy Anniversary!",t:"Saath aise hi mazboot rahe!",m:[
-  "💞 Happy Anniversary {name}! 💞\nAapka saath aise hi mazboot rahe, pyaar din-b-din badhta rahe! 🥰🌹",
-  "Anniversary ki hardik badhai {name}! 💐\nEk dusre ka haath thaame yunhi chalte raho, hamesha khush raho! ❤️✨"]},
- {n:"Congratulations",e:"🏆",h:"Congratulations!",t:"Teri mehnat rang laayi!",m:[
-  "🏆 Congratulations {name}! 🏆\nTeri mehnat rang laayi, mujhe tujh par bahut garv hai! 👏🔥\nAise hi aage badhta reh! 🚀",
-  "{name}, CONGRATS! 🎉🥳\nTune kar dikhaya – ab treat to banti hai! 😎🍕"]},
- {n:"Friendship",e:"🤝",h:"Dosti Zindabad!",t:"Tere jaisa dost naseeb se milta hai!",m:[
-  "Yaar {name}, tu mere liye bohot khaas hai! 🤗💛\nTere jaisa dost milna naseeb ki baat hai. Hamesha saath rehna! 🤝✨",
-  "Dosti ka rishta sabse mast hota hai, {name}! 😎\nChahe kuch bhi ho jaye, apni dosti pakki! 💪🔥"]},
- {n:"Thank You",e:"🙏",h:"Thank You!",t:"Dil se shukriya!",m:[
-  "Thank you so much {name}! 🙏💖\nTumhari madad aur saath ke liye dil se shukriya. Tum jaise log kamaal hote hain! ✨",
-  "Shukriya {name}! 🌸\nTumne jo kiya uske liye main hamesha aabhari rahunga. 🤗🙏"]},
- {n:"Get Well",e:"💐",h:"Get Well Soon!",t:"Jaldi theek ho jao, hum saath hain!",m:[
-  "Get well soon {name}! 💐🤗\nAaram karo, khayal rakho, jaldi theek ho jao – hum sab tumhare saath hain! 💪❤️"]},
- {n:"Ganpati",e:"🐘",h:"Ganpati Bappa Morya!",t:"Bappa saare vighna door kare!",m:[
-  "🙏 Ganpati Bappa Morya! 🙏\n{name}, Bappa aapke jeevan se saare vighna door kare aur khushiyan bhar de! 🐘🌺✨\nMangalmurti Morya! 🚩"]},
- {n:"Raksha Bandhan",e:"🧿",h:"Happy Raksha Bandhan!",t:"Ye bandhan hamesha mazboot rahe!",m:[
-  "Happy Raksha Bandhan {name}! 🧿💖\nBhai-behen ka pyaar anmol hai, ye bandhan hamesha mazboot rahe! 🎀🤗"]},
- {n:"Love",e:"❤️",h:"Just For You",t:"Tu bohot special hai mere liye!",m:[
-  "{name}, tu meri zindagi ki sabse khoobsurat wajah hai! ❤️🌹\nBas itna kehna tha – tu bohot special hai mere liye. 🥰✨"]}
+/* Occasions: [category, emoji, name, card headline, card tagline, [greetings]]  — {name} = recipient */
+const CATS = { F: "🪔 Festivals", C: "🎉 Celebrations", D: "🌞 Daily", W: "💌 Wishes" };
+const RAW = [
+ ["F","🪔","Diwali","Happy Diwali!","May your home glow with light and joy!",[
+  "🪔 Happy Diwali {name}! 🪔\nMay the festival of lights fill your home with joy, prosperity and endless smiles. Shubh Deepavali! ✨🎆",
+  "✨ Shubh Deepavali, {name}! ✨\nEat sweets, light diyas and share happiness with the ones you love! 🎇🍬🪔",
+  "Warmest Diwali wishes {name}! 🎆\nMay your life be as bright as a diya and as colourful as a rangoli! 🌟🪔"]],
+ ["F","💰","Dhanteras","Happy Dhanteras!","Health, wealth and prosperity to you!",[
+  "💰 Happy Dhanteras {name}! 💰\nMay Goddess Lakshmi and Lord Kuber bless you with wealth, health and happiness! ✨🪙"]],
+ ["F","🧡","Bhai Dooj","Happy Bhai Dooj!","A bond of love that never fades!",[
+  "🧡 Happy Bhai Dooj {name}! 🧡\nThe love between siblings is priceless. Stay blessed and happy always! 🤗🪔"]],
+ ["F","🎨","Holi","Happy Holi!","Let the colours of joy fill your life!",[
+  "🎨 Happy Holi {name}! 🎨\nMay the colours of Holi bring happiness, love and good luck into your life! 🌈💦",
+  "Bura na mano, Holi hai! 😄\nWishing you a splashy, colourful and joyful Holi, {name}! 🎉🌸",
+  "Let's forget old fights and play with colours, {name}! 🎨\nHappy Holi! 💖"]],
+ ["F","🌸","Navratri","Happy Navratri!","Nine nights of devotion and joy!",[
+  "🌸 Happy Navratri {name}! 🌸\nMay Maa Durga bless you with strength, courage and happiness through these nine nights. 🙏✨",
+  "Dance, devotion and festivity! 💃🕺\nWishing you a joyful Navratri, {name}! Jai Mata Di! 🚩"]],
+ ["F","🏹","Dussehra","Happy Dussehra!","Good always triumphs over evil!",[
+  "🏹 Happy Dussehra {name}! 🏹\nMay the victory of good over evil bring peace and success to your life. Jai Shri Ram! 🚩✨"]],
+ ["F","🙏","Durga Puja","Shubho Durga Puja!","May Maa Durga bless you always!",[
+  "🙏 Shubho Durga Puja {name}! 🙏\nMay Maa Durga destroy your troubles and shower you with happiness and strength! 🌺✨"]],
+ ["F","🐘","Ganesh Chaturthi","Ganpati Bappa Morya!","May Bappa remove all obstacles!",[
+  "🙏 Ganpati Bappa Morya! 🙏\n{name}, may Bappa remove every obstacle from your life and fill it with joy! 🐘🌺\nMangalmurti Morya! 🚩",
+  "Happy Ganesh Chaturthi {name}! 🐘✨\nMay Lord Ganesha bring wisdom, prosperity and good fortune to you and your family. 🙏"]],
+ ["F","🧿","Raksha Bandhan","Happy Raksha Bandhan!","A bond that grows stronger every year!",[
+  "Happy Raksha Bandhan {name}! 🧿💖\nThe love of siblings is priceless. May this bond stay strong forever! 🎀🤗",
+  "🧿 Rakhi Mubarak {name}! 🧿\nThanks for being my protector, friend and partner in crime. Love you! 💛"]],
+ ["F","🦚","Janmashtami","Happy Janmashtami!","Hathi Ghoda Palki, Jai Kanhaiya Lal Ki!",[
+  "🦚 Happy Janmashtami {name}! 🦚\nMay Lord Krishna fill your life with love, joy and wisdom. Jai Shri Krishna! 🙏🎶"]],
+ ["F","🔱","Maha Shivratri","Happy Maha Shivratri!","Har Har Mahadev!",[
+  "🔱 Happy Maha Shivratri {name}! 🔱\nMay Lord Shiva bless you with peace, strength and happiness. Har Har Mahadev! 🙏🕉️"]],
+ ["F","🏹","Ram Navami","Happy Ram Navami!","Jai Shri Ram!",[
+  "🚩 Happy Ram Navami {name}! 🚩\nMay Lord Ram's blessings bring peace, truth and righteousness to your life. Jai Shri Ram! 🙏"]],
+ ["F","🚩","Hanuman Jayanti","Hanuman Jayanti!","Jai Bajrangbali!",[
+  "🚩 Happy Hanuman Jayanti {name}! 🚩\nMay Bajrangbali give you strength and courage to overcome every challenge. Jai Hanuman! 🙏💪"]],
+ ["F","🪁","Makar Sankranti","Happy Makar Sankranti!","Fly high with joy!",[
+  "🪁 Happy Makar Sankranti {name}! 🪁\nMay your life soar high like a kite and be as sweet as til-gul! Til gul ghya, god god bola! 😊✨"]],
+ ["F","🔥","Lohri","Happy Lohri!","Warmth, bonfire and bhangra!",[
+  "🔥 Happy Lohri {name}! 🔥\nMay the bonfire of Lohri burn away sorrows and bring warmth, joy and prosperity! 🥳🌾"]],
+ ["F","🌾","Pongal","Happy Pongal!","May your harvest overflow with joy!",[
+  "🌾 Happy Pongal {name}! 🌾\nMay the harvest festival bring abundance, happiness and good health to your home! ☀️🍚"]],
+ ["F","🌼","Onam","Happy Onam!","Wishing you a bountiful Onam!",[
+  "🌼 Happy Onam {name}! 🌼\nMay King Mahabali's blessings fill your life with prosperity and joy. Enjoy the Sadhya! 🍌✨"]],
+ ["F","🌾","Baisakhi","Happy Baisakhi!","Celebrate the harvest and new beginnings!",[
+  "🌾 Happy Baisakhi {name}! 🌾\nMay this harvest festival bring you happiness, prosperity and a lot of bhangra! 💃🥁"]],
+ ["F","🎏","Gudi Padwa","Happy Gudi Padwa!","Naveen varshachya shubhechha!",[
+  "🎏 Happy Gudi Padwa {name}! 🎏\nMay the new year bring you success, happiness and prosperity. Naveen varshachya hardik shubhechha! 🌟"]],
+ ["F","🌿","Ugadi","Happy Ugadi!","A fresh start full of hope!",[
+  "🌿 Happy Ugadi {name}! 🌿\nMay the new year be filled with sweet moments and new opportunities! ✨🥭"]],
+ ["F","🌙","Eid al-Fitr","Eid Mubarak!","Blessings and happiness be yours!",[
+  "🌙 Eid Mubarak {name}! 🌙\nMay Allah accept your prayers and fill your life with happiness and peace. 🤲✨\nWaiting for the sheer khurma! 😋",
+  "Eid Mubarak {name}! 🕌💚\nMay this Eid bring barakah, love and countless blessings to your home. 🌟🤗"]],
+ ["F","🐑","Eid al-Adha","Eid al-Adha Mubarak!","A festival of sacrifice and sharing!",[
+  "🕌 Eid al-Adha Mubarak {name}! 🕌\nMay this Bakrid teach us the spirit of sacrifice and bring peace, love and blessings to you. 🤲💚"]],
+ ["F","🌙","Ramadan","Ramadan Mubarak!","A blessed month of faith and peace!",[
+  "🌙 Ramadan Mubarak {name}! 🌙\nMay this holy month bring you peace, forgiveness and endless blessings. 🤲✨"]],
+ ["F","🎄","Christmas","Merry Christmas!","Joy, peace and love to the world!",[
+  "🎄 Merry Christmas {name}! 🎄\nWishing you a season filled with love, laughter and happiness. Have a wonderful Christmas! 🎅🎁",
+  "Ho ho ho! 🎅 Merry Christmas {name}!\nMay your holidays sparkle with joy and your heart be full of warmth. ❄️✨"]],
+ ["F","🐣","Easter","Happy Easter!","Hope, love and new beginnings!",[
+  "🐣 Happy Easter {name}! 🐣\nMay this Easter fill your heart with hope, love and fresh beginnings. 🌷✨"]],
+ ["F","🕊️","Good Friday","Good Friday","A day of reflection and peace.",[
+  "🕊️ {name}, wishing you a peaceful Good Friday. May love and compassion guide your day. 🙏"]],
+ ["F","🙏","Guru Nanak Jayanti","Guru Nanak Jayanti!","Waheguru Ji Ka Khalsa!",[
+  "🙏 Happy Guru Nanak Jayanti {name}! 🙏\nMay Guru Nanak Dev Ji's teachings light your path with truth, kindness and peace. Waheguru! ✨"]],
+ ["F","☸️","Buddha Purnima","Buddha Purnima","May peace and wisdom be with you!",[
+  "☸️ Happy Buddha Purnima {name}! ☸️\nMay the teachings of Lord Buddha bring you peace, compassion and wisdom. 🪷✨"]],
+ ["F","🕉️","Mahavir Jayanti","Mahavir Jayanti","Live and let live!",[
+  "🕉️ Happy Mahavir Jayanti {name}! 🕉️\nMay Lord Mahavir's teachings of non-violence and truth inspire your life. 🙏"]],
+ ["F","🌕","Karva Chauth","Happy Karva Chauth!","Love that lasts a lifetime!",[
+  "🌕 Happy Karva Chauth {name}! 🌕\nMay your bond grow stronger and your love shine brighter than the moon! 💞✨"]],
+ ["F","🌅","Chhath Puja","Happy Chhath Puja!","Blessings of the Sun God!",[
+  "🌅 Happy Chhath Puja {name}! 🌅\nMay Surya Dev and Chhathi Maiya bless you with health, happiness and prosperity. 🙏"]],
+ ["F","📚","Vasant Panchami","Happy Vasant Panchami!","Blessings of Maa Saraswati!",[
+  "📚 Happy Vasant Panchami {name}! 📚\nMay Maa Saraswati bless you with knowledge, creativity and wisdom. 💛🌼"]],
+ ["F","✨","Akshaya Tritiya","Akshaya Tritiya","May good fortune never end!",[
+  "✨ Happy Akshaya Tritiya {name}! ✨\nMay your life be filled with endless prosperity and good fortune. 🪙🙏"]],
+ ["F","🙏","Guru Purnima","Happy Guru Purnima!","Gratitude to every teacher and guide!",[
+  "🙏 Happy Guru Purnima {name}! 🙏\nThank you for being a guide and inspiration. Wishing you blessings and wisdom always! 🌕✨"]],
+ ["C","🎂","Birthday","Happy Birthday!","Today is your day – party time!",[
+  "Happy Birthday {name}! 🎉🎂\nToday is your day, the party is yours and the cake is yours too – just don't forget the treat! 😎🔥\nMay this year bring loads of joy and success! 🥳💖",
+  "🎈 Many happy returns of the day, {name}! 🎈\nMay you keep smiling, keep shining and keep winning hearts. 🌟\nEnjoy every moment today! 🍰🎁",
+  "Hey {name}, HAPPY BIRTHDAY! 🥳🎂\nOne more year older, but still a kid at heart 😂💫\nGod bless you, stay happy always! 🙏✨",
+  "Another trip around the sun! ☀️ Happy Birthday {name}!\nWishing you health, wealth and all the happiness in the world. 🎁💐"]],
+ ["C","💞","Anniversary","Happy Anniversary!","Here's to many more years together!",[
+  "💞 Happy Anniversary {name}! 💞\nMay your bond stay strong and your love grow deeper every day! 🥰🌹",
+  "Heartiest anniversary wishes {name}! 💐\nKeep holding hands and walking together. Stay happy always! ❤️✨"]],
+ ["C","🏆","Congratulations","Congratulations!","Your hard work paid off!",[
+  "🏆 Congratulations {name}! 🏆\nYour hard work has paid off and I'm so proud of you! 👏🔥\nKeep going higher! 🚀",
+  "{name}, CONGRATS! 🎉🥳\nYou did it – now a treat is due! 😎🍕"]],
+ ["C","💍","Wedding","Happy Wedding!","Wishing you a lifetime of love!",[
+  "💍 Congratulations on your wedding, {name}! 💍\nMay your journey together be full of love, laughter and beautiful memories. 💐✨"]],
+ ["C","💝","Engagement","Congrats on Engagement!","The start of a beautiful journey!",[
+  "💝 Congratulations on your engagement, {name}! 💝\nWishing you both a lifetime of love and happiness. 🥂💍"]],
+ ["C","👶","New Baby","Welcome Little One!","A new bundle of joy!",[
+  "👶 Congratulations {name}! 👶\nWelcome to the newest member of the family. May the little one bring endless joy and blessings! 🍼💖"]],
+ ["C","🏡","Housewarming","Happy Housewarming!","A new home full of happiness!",[
+  "🏡 Congratulations on your new home, {name}! 🏡\nMay it be filled with love, laughter and prosperity. Happy housewarming! 🪔✨"]],
+ ["C","💼","New Job","Congrats on Your New Job!","New role, new heights!",[
+  "💼 Congratulations on your new job, {name}! 💼\nYou deserve every bit of this success. Go and rock it! 🚀🔥"]],
+ ["C","🎓","Graduation","Congrats, Graduate!","Dreams achieved, future awaits!",[
+  "🎓 Congratulations on your graduation, {name}! 🎓\nAll the hard work has paid off. The world is waiting for you! 🌍✨"]],
+ ["C","🌟","Promotion","Congrats on Your Promotion!","Well deserved success!",[
+  "🌟 Congratulations on your promotion, {name}! 🌟\nSo well deserved – keep climbing higher! 📈🥳"]],
+ ["C","🥳","Retirement","Happy Retirement!","Time to relax and enjoy!",[
+  "🥳 Happy Retirement {name}! 🥳\nThank you for all your hard work. Now it's time to relax and enjoy life to the fullest! 🌴☕"]],
+ ["C","👋","Farewell","Farewell & Best Wishes!","You will be missed!",[
+  "👋 {name}, we'll miss you! 👋\nWishing you great success ahead. Stay in touch and keep shining! 🌟💛"]],
+ ["C","🤗","Welcome","Welcome!","So happy to have you!",[
+  "🤗 Welcome {name}! 🤗\nWe're so happy to have you with us. Hope you enjoy every moment! 🎉"]],
+ ["C","🇮🇳","Republic Day","Happy Republic Day!","Jai Hind!",[
+  "🇮🇳 Happy Republic Day {name}! 🇮🇳\nLet's salute our Constitution and the spirit of India. Jai Hind! ✨"]],
+ ["C","🇮🇳","Independence Day","Happy Independence Day!","Freedom, pride and unity!",[
+  "🇮🇳 Happy Independence Day {name}! 🇮🇳\nProud to be an Indian. May we always protect our freedom and unity. Jai Hind! 🧡🤍💚"]],
+ ["C","🕊️","Gandhi Jayanti","Gandhi Jayanti","Truth and non-violence forever!",[
+  "🕊️ {name}, remembering Bapu on Gandhi Jayanti. May his message of truth and non-violence guide us always. 🙏"]],
+ ["C","🎆","New Year","Happy New Year!","New year, new dreams, new goals!",[
+  "🎆 Happy New Year {name}! 🎆\nNew year, new dreams, new goals – may you achieve them all! 🚀💪\nCheers to an amazing year ahead! 🥂",
+  "Wishing you a very Happy New Year, {name}! 🎉\nKeep the memories of last year close and make this year even better! 🔥✨"]],
+ ["C","❤️","Valentine's Day","Happy Valentine's Day!","Love is in the air!",[
+  "❤️ Happy Valentine's Day {name}! ❤️\nYou make every day brighter and every moment special. 🌹🥰"]],
+ ["C","👩","Women's Day","Happy Women's Day!","Celebrating the strength of women!",[
+  "👩 Happy Women's Day {name}! 👩\nYou are strong, inspiring and capable of anything. Keep shining! 🌸✨"]],
+ ["C","💐","Mother's Day","Happy Mother's Day!","Thank you for your endless love!",[
+  "💐 Happy Mother's Day {name}! 💐\nThank you for your endless love, care and sacrifices. You are the heart of our family. ❤️"]],
+ ["C","👔","Father's Day","Happy Father's Day!","My hero, my guide!",[
+  "👔 Happy Father's Day {name}! 👔\nThank you for being my strength and my role model. Love you always! 💙"]],
+ ["C","📖","Teachers' Day","Happy Teachers' Day!","Thank you for shaping our future!",[
+  "📖 Happy Teachers' Day {name}! 📖\nThank you for guiding, inspiring and believing in us. You make the world better! 🍎🙏"]],
+ ["C","🎈","Children's Day","Happy Children's Day!","Stay young at heart!",[
+  "🎈 Happy Children's Day {name}! 🎈\nKeep smiling, keep dreaming and stay young at heart! 🍭🎠"]],
+ ["C","🤝","Friendship Day","Happy Friendship Day!","Friends make life beautiful!",[
+  "Hey {name}, you mean so much to me! 🤗💛\nHaving a friend like you is a blessing. Stay with me always! 🤝✨",
+  "Friendship is the best bond, {name}! 😎\nNo matter what happens, our friendship stays strong! 💪🔥"]],
+ ["C","🦃","Thanksgiving","Happy Thanksgiving!","Grateful for you!",[
+  "🦃 Happy Thanksgiving {name}! 🦃\nGrateful for you today and every day. Enjoy the feast! 🍂🥧"]],
+ ["D","🌞","Good Morning","Good Morning!","New day, new hope, new energy!",[
+  "Good Morning {name}! ☀️🌸\nNew day, new hope, new energy! May today bring you something wonderful. 💪😊",
+  "🌅 Rise and shine {name}! 🌅\nHave your chai, put on a smile and conquer the day! ☕😄\nHave a fantastic day! ✨",
+  "May the first rays of the sun bring you happiness, {name}! 🌻\nGood Morning – make today count! 🔥"]],
+ ["D","🌙","Good Night","Good Night!","Sweet dreams and peaceful sleep!",[
+  "Good Night {name}! 🌙✨\nLet go of the day's worries and have the sweetest dreams. 😴💤",
+  "🌃 Sleep tight {name}! 🌃\nTomorrow brings a fresh start. Good Night! ⭐"]],
+ ["D","🌤️","Good Afternoon","Good Afternoon!","Hope your day is going great!",[
+  "🌤️ Good Afternoon {name}! 🌤️\nHope your day is going great. Take a break and recharge! ☕😊"]],
+ ["W","🙏","Thank You","Thank You!","Thank you from the bottom of my heart!",[
+  "Thank you so much {name}! 🙏💖\nThanks for your help and support. People like you are amazing! ✨",
+  "Thanks a lot {name}! 🌸\nI'm truly grateful for everything you did. 🤗🙏"]],
+ ["W","💐","Get Well Soon","Get Well Soon!","Rest well, we are with you!",[
+  "Get well soon {name}! 💐🤗\nTake rest, take care and recover quickly – we're all with you! 💪❤️"]],
+ ["W","🍀","Good Luck","Best of Luck!","You've got this!",[
+  "🍀 Best of luck {name}! 🍀\nGive it your best – I'm sure you'll do great! 💪🌟",
+  "All the best for your exams, {name}! 📚\nStay calm, trust your preparation and shine! ✨🔥"]],
+ ["W","🥺","Miss You","Miss You!","Thinking of you today.",[
+  "🥺 Missing you {name}! 🥺\nWish we could meet soon. Take care until then! 🤗💛"]],
+ ["W","🙇","Sorry","I'm Sorry","Please forgive me.",[
+  "🙇 I'm really sorry {name}. 🙇\nI value you and our bond a lot. Please forgive me. 💛"]],
+ ["W","🕯️","Condolence","With Deepest Sympathy","Our thoughts are with you.",[
+  "🕯️ {name}, I'm so sorry for your loss. 🕯️\nMy thoughts and prayers are with you and your family. May you find strength and peace. 🙏"]],
+ ["W","❤️","Love","Just For You","You are so special to me!",[
+  "{name}, you are the most beautiful reason in my life! ❤️🌹\nJust wanted to say – you're really special to me. 🥰✨"]]
 ];
+const OCC = RAW.map(([c,e,n,h,t,m]) => ({c,e,n,h,t,m}));
+/* Translations: [card headline, card tagline, message]. Occasions not listed fall back to English. */
+const LANG = {
+ hi: {
+  "Birthday":["जन्मदिन मुबारक!","आज का दिन सिर्फ़ तुम्हारा!","🎂 जन्मदिन की ढेरों शुभकामनाएँ {name}! 🎉\nआपकी ज़िंदगी खुशियों, सेहत और सफलता से भरी रहे। 🥳💖"],
+  "Diwali":["शुभ दीपावली!","दीयों की रोशनी से घर जगमगाए!","🪔 {name}, आपको और आपके परिवार को दीपावली की हार्दिक शुभकामनाएँ! 🪔\nलक्ष्मी माँ की कृपा सदा बनी रहे। ✨🎆"],
+  "Holi":["होली की शुभकामनाएँ!","रंगों से भरी हो आपकी ज़िंदगी!","🎨 {name}, होली की हार्दिक शुभकामनाएँ! 🎨\nरंगों का ये त्योहार आपके जीवन में खुशियाँ भर दे। 🌈💖"],
+  "Good Morning":["सुप्रभात!","नया दिन, नई उम्मीद!","🌅 सुप्रभात {name}! 🌅\nआपका दिन मंगलमय हो, खुश रहिए और मुस्कुराते रहिए! ☕😊"],
+  "Good Night":["शुभ रात्रि!","मीठे सपनों के साथ सो जाइए","🌙 शुभ रात्रि {name}! 🌙\nमीठे सपने देखिए, कल फिर नई शुरुआत होगी। 😴✨"],
+  "Eid al-Fitr":["ईद मुबारक!","खुशियाँ और बरकत आपके नाम!","🌙 {name}, ईद मुबारक! 🌙\nअल्लाह आपकी हर दुआ क़ुबूल करे और ज़िंदगी खुशियों से भर दे। 🤲✨"],
+  "New Year":["नया साल मुबारक!","नए सपने, नए लक्ष्य!","🎆 {name}, नववर्ष की हार्दिक शुभकामनाएँ! 🎆\nये साल आपके लिए खुशियाँ और कामयाबी लेकर आए। 🥂🚀"],
+  "Ganesh Chaturthi":["गणपति बाप्पा मोरया!","बाप्पा सारे विघ्न दूर करें!","🙏 गणपति बाप्पा मोरया! 🙏\n{name}, बाप्पा आपके जीवन से सारे विघ्न दूर करें और खुशियाँ भर दें। 🐘🌺"],
+  "Raksha Bandhan":["रक्षाबंधन की शुभकामनाएँ!","ये बंधन सदा मज़बूत रहे!","🧿 {name}, रक्षाबंधन की हार्दिक शुभकामनाएँ! 🧿\nभाई-बहन का प्यार अनमोल है, ये बंधन हमेशा बना रहे। 🎀💖"],
+  "Anniversary":["सालगिरह मुबारक!","साथ यूँ ही मज़बूत रहे!","💞 {name}, शादी की सालगिरह मुबारक! 💞\nआपका साथ यूँ ही बना रहे और प्यार दिन-ब-दिन बढ़ता रहे। 🥰🌹"],
+  "Congratulations":["बहुत-बहुत बधाई!","तुम्हारी मेहनत रंग लाई!","🏆 {name}, बहुत-बहुत बधाई! 🏆\nआपकी मेहनत रंग लाई, हमें आप पर गर्व है। 👏🚀"],
+  "Thank You":["धन्यवाद!","दिल से शुक्रिया!","🙏 {name}, आपका बहुत-बहुत धन्यवाद! 🙏\nआपके साथ और मदद के लिए दिल से शुक्रिया। 💖"]
+ },
+ mr: {
+  "Birthday":["वाढदिवसाच्या शुभेच्छा!","आजचा दिवस फक्त तुझा!","🎂 {name}, वाढदिवसाच्या हार्दिक शुभेच्छा! 🎉\nतुझं आयुष्य आनंद, आरोग्य आणि यशाने भरलेलं राहो. 🥳💖"],
+  "Diwali":["दिवाळीच्या शुभेच्छा!","दिव्यांच्या प्रकाशाने घर उजळो!","🪔 {name}, दिवाळीच्या हार्दिक शुभेच्छा! 🪔\nलक्ष्मीमातेची कृपा सदैव राहो आणि घरात आनंद नांदो. ✨🎆"],
+  "Holi":["होळीच्या शुभेच्छा!","रंगांनी भरलेलं आयुष्य लाभो!","🎨 {name}, होळीच्या आणि रंगपंचमीच्या हार्दिक शुभेच्छा! 🎨\nरंगांचा हा सण तुमच्या आयुष्यात आनंद आणो. 🌈💖"],
+  "Good Morning":["शुभ प्रभात!","नवा दिवस, नवी उमेद!","🌅 शुभ प्रभात {name}! 🌅\nआजचा दिवस आनंदाचा आणि यशाचा जावो! ☕😊"],
+  "Good Night":["शुभ रात्री!","गोड स्वप्नांसह झोपा","🌙 शुभ रात्री {name}! 🌙\nगोड स्वप्नं पाहा, उद्या नवी सुरुवात होईल. 😴✨"],
+  "Eid al-Fitr":["ईद मुबारक!","आनंद आणि बरकत लाभो!","🌙 {name}, ईद मुबारक! 🌙\nअल्लाह तुमची प्रत्येक दुआ कबूल करो आणि आयुष्य आनंदाने भरो. 🤲✨"],
+  "New Year":["नववर्षाच्या शुभेच्छा!","नवी स्वप्नं, नवे संकल्प!","🎆 {name}, नववर्षाच्या हार्दिक शुभेच्छा! 🎆\nहे वर्ष तुम्हाला आनंद आणि यश देवो. 🥂🚀"],
+  "Ganesh Chaturthi":["गणपती बाप्पा मोरया!","बाप्पा सर्व विघ्न दूर करो!","🙏 गणपती बाप्पा मोरया! 🙏\n{name}, बाप्पा तुमच्या आयुष्यातील सर्व विघ्नं दूर करो आणि आनंद देवो. 🐘🌺\nमंगलमूर्ती मोरया! 🚩"],
+  "Raksha Bandhan":["रक्षाबंधनाच्या शुभेच्छा!","हे नातं सदैव घट्ट राहो!","🧿 {name}, रक्षाबंधनाच्या हार्दिक शुभेच्छा! 🧿\nभाऊ-बहिणीचं प्रेम अनमोल आहे, हे नातं कायम टिको. 🎀💖"],
+  "Anniversary":["लग्नाच्या वाढदिवसाच्या शुभेच्छा!","साथ अशीच कायम राहो!","💞 {name}, लग्नाच्या वाढदिवसाच्या हार्दिक शुभेच्छा! 💞\nतुमची साथ अशीच घट्ट राहो आणि प्रेम वाढत राहो. 🥰🌹"],
+  "Congratulations":["हार्दिक अभिनंदन!","तुझ्या मेहनतीचं चीज झालं!","🏆 {name}, हार्दिक अभिनंदन! 🏆\nतुझ्या मेहनतीचं चीज झालं, आम्हाला तुझा अभिमान वाटतो. 👏🚀"],
+  "Thank You":["धन्यवाद!","मनापासून आभार!","🙏 {name}, मनापासून धन्यवाद! 🙏\nतुमच्या मदतीबद्दल आणि साथीबद्दल खूप आभार. 💖"],
+  "Gudi Padwa":["गुढीपाडव्याच्या शुभेच्छा!","नववर्षाभिनंदन!","🎏 {name}, गुढीपाडव्याच्या आणि नववर्षाच्या हार्दिक शुभेच्छा! 🎏\nहे नवं वर्ष सुख, समृद्धी आणि यश घेऊन येवो. 🌟"],
+  "Makar Sankranti":["मकरसंक्रांतीच्या शुभेच्छा!","तिळगूळ घ्या, गोड गोड बोला!","🪁 {name}, तिळगूळ घ्या, गोड गोड बोला! 🪁\nमकरसंक्रांतीच्या हार्दिक शुभेच्छा! ✨"]
+ },
+ hl: {
+  "Birthday":["Happy Birthday!","Aaj ka din tera, party bhi teri!","Happy Birthday {name}! 🎉🎂\nAaj ka din tera, party bhi teri, cake bhi teri – bas treat mat bhoolna! 😎🔥\nYe saal dher saari khushiyan, success aur masti lekar aaye! 🥳💖"],
+  "Diwali":["Happy Diwali!","Diyon ki roshni se ghar jagmagaye!","✨ Shubh Deepavali, {name}! ✨\nMithai khao, patake jalao (par safely 😉), aur parivar ke saath khushiyan bantao! 🎇🍬🪔"],
+  "Holi":["Happy Holi!","Bura na mano, Holi hai!","Bura na mano, Holi hai! 😄\n{name}, tumhe aur tumhare parivar ko rangon bhari Holi mubarak! 🎨🌈💖"],
+  "Good Morning":["Good Morning!","Naya din, nayi umeed, nayi energy!","🌅 Suprabhat {name}! 🌅\nChai pi lo, smile kar lo, aur din ko jeet lo! ☕😄\nHave a fantastic day! ✨"],
+  "Good Night":["Good Night!","Sweet dreams, kal milte hain!","🌙 Good Night {name}! 🌙\nDin bhar ki tension bhool jao aur mast neend lo. Kal phir dhamaal karenge! 😴✨"],
+  "Eid al-Fitr":["Eid Mubarak!","Khushiyan aur barkat aapke naam!","🌙 Eid Mubarak {name}! 🌙\nAllah aapki har dua qubool kare aur zindagi khushiyon se bhar de. 🤲✨\nSheer khurma ka intezaar rahega! 😋"],
+  "New Year":["Happy New Year!","Naya saal, naye sapne, naye goals!","🎆 Happy New Year {name}! 🎆\nNaya saal, naye sapne, naye goals – is saal sab kuch haasil ho! 🚀💪\nCheers to a mast year ahead! 🥂"],
+  "Ganesh Chaturthi":["Ganpati Bappa Morya!","Bappa saare vighna door kare!","🙏 Ganpati Bappa Morya! 🙏\n{name}, Bappa aapke jeevan se saare vighna door kare aur khushiyan bhar de! 🐘🌺✨\nMangalmurti Morya! 🚩"],
+  "Raksha Bandhan":["Happy Raksha Bandhan!","Ye bandhan hamesha mazboot rahe!","Happy Raksha Bandhan {name}! 🧿💖\nBhai-behen ka pyaar anmol hai, ye bandhan hamesha mazboot rahe! 🎀🤗"],
+  "Anniversary":["Happy Anniversary!","Saath aise hi mazboot rahe!","💞 Happy Anniversary {name}! 💞\nAapka saath aise hi mazboot rahe, pyaar din-b-din badhta rahe! 🥰🌹"],
+  "Congratulations":["Congratulations!","Teri mehnat rang laayi!","🏆 Congratulations {name}! 🏆\nTeri mehnat rang laayi, mujhe tujh par bahut garv hai! 👏🔥\nAise hi aage badhta reh! 🚀"],
+  "Thank You":["Thank You!","Dil se shukriya!","Thank you so much {name}! 🙏💖\nTumhari madad aur saath ke liye dil se shukriya. Tum jaise log kamaal hote hain! ✨"]
+ }
+};
 const TPL = [
  {n:"Sunset",c1:"#ff5f8f",c2:"#ff8a3d",ink:"#ffffff",ac:"#ffe9a8",d:"circles"},
  {n:"Royal",c1:"#1b1464",c2:"#6a2bd9",ink:"#ffffff",ac:"#ffc94d",d:"stars"},
@@ -217,7 +441,11 @@ const TPL = [
  {n:"Diya",c1:"#4a0d1e",c2:"#e8631a",ink:"#fff3d6",ac:"#ffd45e",d:"circles"},
  {n:"Blush",c1:"#fff0f4",c2:"#ffd3e0",ink:"#6b1d3a",ac:"#d6336c",d:"frame"},
  {n:"Ocean",c1:"#0077b6",c2:"#90e0ef",ink:"#ffffff",ac:"#fff3a8",d:"circles"},
- {n:"Gold",c1:"#0d0d0d",c2:"#2b2113",ink:"#f5e6c0",ac:"#ffc94d",d:"frame"}
+ {n:"Gold",c1:"#0d0d0d",c2:"#2b2113",ink:"#f5e6c0",ac:"#ffc94d",d:"frame"},
+ {n:"Saffron",c1:"#ff9933",c2:"#138808",ink:"#ffffff",ac:"#fff3c4",d:"circles"},
+ {n:"Lavender",c1:"#e6d9ff",c2:"#b9a2ff",ink:"#2d1b5e",ac:"#6a2bd9",d:"frame"},
+ {n:"Forest",c1:"#0b3d2e",c2:"#2f9e6b",ink:"#f0fff6",ac:"#ffe28a",d:"stars"},
+ {n:"Holi",c1:"#ff2d95",c2:"#7a5cff",ink:"#ffffff",ac:"#fff04d",d:"circles"}
 ];
 
 const db = getFirestore(initializeApp(firebaseConfig));
@@ -233,12 +461,12 @@ const normalizeNumber = raw => { const d = raw.replace(/\D/g, ""); if (d.length 
 const tParam = new URLSearchParams(location.search).get("t");
 if (tParam) {
   $("sendView").hidden = true; $("viewView").hidden = false;
-  $("h1").innerHTML = "Tumhare <em>Greetings</em>"; $("sub").textContent = "Tumhare liye bheji gayi saari greetings aur photos yahan hain. 💌";
+  $("h1").innerHTML = "Your <em>Greetings</em>"; $("sub").textContent = "All the greetings and photos sent to you are here. 💌";
   (async () => {
     try {
       const s = await getDoc(doc(db, COL_PORTAL, tParam));
       const items = s.exists() ? (s.data().items || []).slice().sort((a, b) => b.at - a.at) : [];
-      if (!items.length) { $("vstatus").textContent = "Abhi koi greeting nahi mili."; return; }
+      if (!items.length) { $("vstatus").textContent = "No greetings found yet."; return; }
       $("vstatus").textContent = "";
       items.forEach(it => {
         const c = document.createElement("article"); c.className = "gcard";
@@ -255,7 +483,7 @@ if (tParam) {
         const d = document.createElement("small"); d.textContent = new Date(it.at).toLocaleString(); c.append(d);
         $("gl").append(c);
       });
-    } catch (e) { $("vstatus").textContent = "Greetings load nahi ho payi. Dobara try karo."; }
+    } catch (e) { $("vstatus").textContent = "Couldn't load greetings. Please try again."; }
   })();
 }
 
@@ -272,43 +500,54 @@ function drawCard(cv, t, o, name, from, s) {
   c.globalAlpha = 1;
   if (t.d === "frame") { c.strokeStyle = t.ac; c.lineWidth = 8; c.strokeRect(36, 36, S - 72, S - 72); c.lineWidth = 2; c.strokeRect(58, 58, S - 116, S - 116); }
   c.textAlign = "center"; c.textBaseline = "alphabetic";
-  c.font = "170px serif"; c.fillStyle = t.ink; c.fillText(o.e, S / 2, 270);
-  c.fillStyle = t.ink; fit(c, o.h, z => `700 ${z}px Fraunces,serif`, 900, 112); c.fillText(o.h, S / 2, 470);
-  c.fillStyle = t.ac; fit(c, name, z => `italic 700 ${z}px Fraunces,serif`, 900, 150); c.fillText(name, S / 2, 650);
+  if (cardImg) { const r = 105, cx = S / 2, cy = 175, m = Math.min(cardImg.width, cardImg.height); c.save(); c.beginPath(); c.arc(cx, cy, r, 0, 7); c.clip(); c.drawImage(cardImg, (cardImg.width - m) / 2, (cardImg.height - m) / 2, m, m, cx - r, cy - r, 2 * r, 2 * r); c.restore(); c.strokeStyle = t.ac; c.lineWidth = 8; c.beginPath(); c.arc(cx, cy, r + 4, 0, 7); c.stroke(); }
+  else { c.font = "170px serif"; c.fillStyle = t.ink; c.fillText(o.e, S / 2, 270); }
+  c.fillStyle = t.ink; fit(c, o.h, z => `700 ${z}px Fraunces,Hind,serif`, 900, 112); c.fillText(o.h, S / 2, 470);
+  c.fillStyle = t.ac; fit(c, name, z => `italic 700 ${z}px Fraunces,Hind,serif`, 900, 150); c.fillText(name, S / 2, 650);
   c.fillStyle = t.ink; c.globalAlpha = .92; c.font = "500 46px Hind,sans-serif";
   wrapLines(c, o.t, 820).slice(0, 3).forEach((l, i) => c.fillText(l, S / 2, 770 + i * 62));
   c.globalAlpha = 1;
-  if (from) { c.fillStyle = t.ac; c.font = "italic 700 52px Fraunces,serif"; c.fillText("— " + from, S / 2, 985); }
+  if (from) { c.fillStyle = t.ac; c.font = "italic 700 52px Fraunces,Hind,serif"; c.fillText("— " + from, S / 2, 985); }
   c.globalAlpha = .55; c.fillStyle = t.ink; c.font = "500 26px Hind,sans-serif"; c.fillText("Siddhesh Chandrakant Sangale", S / 2, 1038); c.globalAlpha = 1;
 }
 
 /* ===== UI STATE ===== */
-let cur = -1, mi = 0, tpl = -1, images = [];
-const msg = $("msg"), occBox = $("occs"), tplBox = $("tpls"), rcps = $("rcps");
-const curOcc = () => cur >= 0 ? OCC[cur] : { n: "Greeting", e: "💌", h: "Greetings!", t: "Tumhare liye ek chhota sa tohfa!", m: [] };
+let cur = -1, mi = 0, tpl = -1, images = [], cat = "ALL", accentOn = false, lang = "en", cardImg = null;
+const msg = $("msg"), occBox = $("occs"), tplBox = $("tpls"), rcps = $("rcps"), catBox = $("cats");
+const ch = $("ch"), ce = $("ce"), ct = $("ct"), cc = $("cc");
+const occ = i => { const o = OCC[i], t = lang !== "en" && LANG[lang] && LANG[lang][o.n]; return t ? { ...o, h: t[0], t: t[1], m: [t[2]] } : o; };
+const base = () => cur >= 0 ? occ(cur) : { n: "Greeting", e: "💌", h: "Greetings!", t: "A little gift just for you!", m: [] };
+const curOcc = () => { const b = base(); return { ...b, h: ch.value.trim() || b.h, t: ct.value.trim() || b.t, e: ce.value.trim() || b.e }; };
+const tplOf = i => accentOn ? { ...TPL[i], ac: cc.value } : TPL[i];
 const firstName = () => (rcps.querySelector(".rn")?.value.trim()) || "Rahul";
 
-OCC.forEach((o, i) => { const b = document.createElement("button"); b.type = "button"; b.className = "occ"; b.setAttribute("aria-pressed", "false"); b.textContent = o.e + " " + o.n; b.onclick = () => pick(i); occBox.append(b); });
-const noneB = document.createElement("button"); noneB.type = "button"; noneB.className = "tpl none"; noneB.setAttribute("aria-pressed", "true"); noneB.textContent = "Sirf text (card nahi)"; noneB.onclick = () => selTpl(-1); tplBox.append(noneB);
+/* category tabs + occasion chips */
+[["ALL", "⭐ All"], ...Object.entries(CATS)].forEach(([k, label]) => { const b = document.createElement("button"); b.type = "button"; b.className = "cat"; b.dataset.k = k; b.setAttribute("aria-pressed", String(k === "ALL")); b.textContent = label; b.onclick = () => { cat = k; [...catBox.children].forEach(x => x.setAttribute("aria-pressed", String(x === b))); [...occBox.children].forEach(x => x.hidden = !(k === "ALL" || x.dataset.c === k)); }; catBox.append(b); });
+OCC.forEach((o, i) => { const b = document.createElement("button"); b.type = "button"; b.className = "occ"; b.dataset.c = o.c; b.setAttribute("aria-pressed", "false"); b.textContent = o.e + " " + o.n; b.onclick = () => pick(i); occBox.append(b); });
+const noneB = document.createElement("button"); noneB.type = "button"; noneB.className = "tpl none"; noneB.setAttribute("aria-pressed", "true"); noneB.textContent = "Text only (no card)"; noneB.onclick = () => selTpl(-1); tplBox.append(noneB);
 const tCanv = TPL.map((t, i) => { const b = document.createElement("button"); b.type = "button"; b.className = "tpl"; b.setAttribute("aria-pressed", "false"); const cv = document.createElement("canvas"); const sp = document.createElement("span"); sp.textContent = t.n; b.append(cv, sp); b.onclick = () => selTpl(i); tplBox.append(b); return cv; });
-function redraw() { const o = curOcc(), n = firstName(), f = $("from").value.trim(); tCanv.forEach((cv, i) => drawCard(cv, TPL[i], o, n, f, .26)); }
+function redraw() { const o = curOcc(), n = firstName(), f = $("from").value.trim(); tCanv.forEach((cv, i) => drawCard(cv, tplOf(i), o, n, f, .26)); }
 function selTpl(i) { tpl = i; [...tplBox.children].forEach((b, k) => b.setAttribute("aria-pressed", String(k === i + 1))); }
-function fillMsg() { const o = OCC[cur]; msg.value = o.m[mi % o.m.length]; }
-function pick(i) { cur = i; mi = Math.floor(Math.random() * OCC[i].m.length); [...occBox.children].forEach((b, k) => b.setAttribute("aria-pressed", String(k === i))); fillMsg(); redraw(); }
-$("shuf").onclick = () => { if (cur < 0) return say("Pehle occasion chuno.", "err"); mi++; fillMsg(); say(""); };
+function fillMsg() { const o = occ(cur); msg.value = o.m[mi % o.m.length]; }
+function resetCz() { ch.value = ce.value = ct.value = ""; accentOn = false; cc.value = "#ffc94d"; }
+function pick(i) { cur = i; mi = Math.floor(Math.random() * occ(i).m.length); $("langHint").textContent = lang !== "en" && !(LANG[lang] && LANG[lang][OCC[i].n]) ? "Translation for this occasion is coming soon – showing English." : ""; [...occBox.children].forEach((b, k) => b.setAttribute("aria-pressed", String(k === i))); resetCz(); const oo = occ(i); ch.placeholder = oo.h; ct.placeholder = oo.t; ce.placeholder = oo.e; fillMsg(); redraw(); }
+$("shuf").onclick = () => { if (cur < 0) return say("Please pick an occasion first.", "err"); mi++; fillMsg(); say(""); };
 $("from").addEventListener("input", redraw);
+[ch, ce, ct].forEach(el => el.addEventListener("input", redraw));
+cc.addEventListener("input", () => { accentOn = true; redraw(); });
+$("czReset").onclick = () => { resetCz(); redraw(); };
 (document.fonts ? Promise.all([document.fonts.load("700 80px Fraunces"), document.fonts.load("italic 700 80px Fraunces"), document.fonts.load("500 40px Hind")]).catch(() => {}) : Promise.resolve()).then(redraw);
 
 /* ===== RECIPIENTS ===== */
 function addRow(name = "", num = "") {
   const r = document.createElement("div"); r.className = "rcp";
-  const a = document.createElement("input"); a.className = "rn"; a.placeholder = "Naam"; a.autocomplete = "off"; a.value = name;
+  const a = document.createElement("input"); a.className = "rn"; a.placeholder = "Name"; a.autocomplete = "off"; a.value = name;
   const b = document.createElement("input"); b.className = "rp"; b.type = "tel"; b.inputMode = "numeric"; b.placeholder = "WhatsApp number"; b.maxLength = 15; b.autocomplete = "off"; b.value = num;
-  const x = document.createElement("button"); x.type = "button"; x.textContent = "×"; x.setAttribute("aria-label", "Hatao");
+  const x = document.createElement("button"); x.type = "button"; x.textContent = "×"; x.setAttribute("aria-label", "Remove");
   x.onclick = () => { if (rcps.children.length > 1) r.remove(); else { a.value = ""; b.value = ""; } count(); redraw(); };
   r.append(a, b, x); rcps.append(r);
 }
-function count() { const n = [...rcps.children].filter(r => r.querySelector(".rn").value.trim() || r.querySelector(".rp").value.trim()).length; $("cnt").textContent = n > 1 ? `${n} log select hain` : ""; }
+function count() { const n = [...rcps.children].filter(r => r.querySelector(".rn").value.trim() || r.querySelector(".rp").value.trim()).length; $("cnt").textContent = n > 1 ? `${n} people selected` : ""; }
 rcps.addEventListener("input", e => { count(); if (e.target.classList.contains("rn")) redraw(); });
 addRow();
 $("addR").onclick = () => { addRow(); rcps.lastChild.querySelector(".rn").focus(); };
@@ -320,7 +559,7 @@ $("plistAdd").onclick = () => {
     if (m) { name = m[1]; num = m[2]; } else { m = l.match(/^(\+?\d[\d\s]{8,15}\d)[\s,;:|\-–]+(.+)$/); if (m) { num = m[1]; name = m[2]; } }
     if (name && num) { const first = rcps.children.length === 1 && !rcps.querySelector(".rn").value && !rcps.querySelector(".rp").value ? rcps.firstChild : null; if (first) first.remove(); addRow(name.trim(), num.replace(/\s+/g, "")); n++; }
   });
-  say(n ? `${n} log add hue.` : "Koi line samajh nahi aayi. Format: Naam 9876543210", n ? "ok" : "err");
+  say(n ? `${n} people added.` : "Couldn't understand any line. Format: Name 9876543210", n ? "ok" : "err");
   if (n) { $("plist").value = ""; $("pasteBox").hidden = true; } count(); redraw();
 };
 function collect() {
@@ -328,9 +567,9 @@ function collect() {
   [...rcps.children].forEach((r, i) => {
     const name = r.querySelector(".rn").value.trim(), raw = r.querySelector(".rp").value.trim();
     if (!name && !raw) return;
-    if (!name) { errs.push(`Row ${i + 1}: naam daalo`); return; }
+    if (!name) { errs.push(`Row ${i + 1}: please enter a name`); return; }
     const to = normalizeNumber(raw);
-    if (!to) { errs.push(`${name}: number galat hai`); return; }
+    if (!to) { errs.push(`${name}: invalid number`); return; }
     if (seen.has(to)) return; seen.add(to); out.push({ name, to });
   });
   return { out, errs };
@@ -341,7 +580,7 @@ const MAX_MB = 15;
 const isImg = f => f.type.startsWith("image/");
 function addFiles(list) {
   [...list].forEach(f => {
-    if (f.size > MAX_MB * 1024 * 1024) return say(`"${f.name}" ${MAX_MB} MB se badi hai.`, "err");
+    if (f.size > MAX_MB * 1024 * 1024) return say(`"${f.name}" is larger than ${MAX_MB} MB.`, "err");
     images.push(f);
   });
   renderThumbs();
@@ -372,24 +611,126 @@ async function upload(file, fname) {
   const fd = new FormData(); fd.append("file", file, fname || file.name); fd.append("upload_preset", CLOUDINARY.uploadPreset); fd.append("folder", CLOUDINARY.folder);
   const r = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY.cloudName}/auto/upload`, { method: "POST", body: fd });
   const j = await r.json();
-  if (!r.ok || !j.secure_url) throw new Error("Upload fail: " + (j.error?.message || r.status));
+  if (!r.ok || !j.secure_url) throw new Error("Upload failed: " + (j.error?.message || r.status));
   return j.secure_url;
 }
 async function ultra(endpoint, params) {
   const r = await fetch(`${ULTRA.base}/messages/${endpoint}`, { method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded" }, body: new URLSearchParams({ token: ULTRA.token, ...params }) });
   const j = await r.json().catch(() => ({}));
-  if (!r.ok || j.error) throw new Error("WhatsApp send fail: " + (typeof j.error === "string" ? j.error : JSON.stringify(j.error || r.status)));
+  if (!r.ok || j.error) throw new Error("WhatsApp send failed: " + (typeof j.error === "string" ? j.error : JSON.stringify(j.error || r.status)));
   return j;
+}
+
+/* ===== LANGUAGE, CONTACTS, FESTIVAL BANNER, BACKUP MODE ===== */
+[["en", "English"], ["hi", "हिंदी"], ["mr", "मराठी"], ["hl", "Hinglish"]].forEach(([k, label]) => {
+  const b = document.createElement("button"); b.type = "button"; b.className = "occ"; b.setAttribute("aria-pressed", String(k === "en")); b.textContent = label;
+  b.onclick = () => { lang = k; [...$("langs").children].forEach(x => x.setAttribute("aria-pressed", String(x === b))); if (cur >= 0) pick(cur); else $("langHint").textContent = k === "en" ? "" : "Pick an occasion – the greeting and card text will use this language.";
+    (document.fonts ? document.fonts.load("700 60px Hind", "अ") : Promise.resolve()).then(redraw).catch(() => {}); };
+  $("langs").append(b);
+});
+
+$("cpBtn").onclick = () => $("cpFile").click();
+$("cpFile").onchange = e => { const f = e.target.files[0]; e.target.value = ""; if (!f) return; const im = new Image(); im.onload = () => { cardImg = im; $("cpDel").hidden = false; redraw(); }; im.src = URL.createObjectURL(f); };
+$("cpDel").onclick = () => { cardImg = null; $("cpDel").hidden = true; redraw(); };
+
+/* Festival dates. Fixed dates repeat every year; lunar dates (LUNAR) are listed per year and must be updated yearly. Eid can differ by a day. */
+const FIXED = { "01-01": "New Year", "01-13": "Lohri", "01-14": "Makar Sankranti|Pongal", "01-26": "Republic Day", "02-14": "Valentine's Day", "03-08": "Women's Day", "04-14": "Baisakhi", "08-15": "Independence Day", "09-05": "Teachers' Day", "10-02": "Gandhi Jayanti", "11-14": "Children's Day", "12-25": "Christmas" };
+const LUNAR = { "2026-11-06": "Dhanteras", "2026-11-08": "Diwali", "2026-11-11": "Bhai Dooj", "2026-11-15": "Chhath Puja", "2026-11-24": "Guru Nanak Jayanti", "2027-02-11": "Vasant Panchami", "2027-03-06": "Maha Shivratri", "2027-03-10": "Eid al-Fitr", "2027-03-22": "Holi", "2027-03-26": "Good Friday", "2027-03-28": "Easter", "2027-04-07": "Gudi Padwa|Ugadi", "2027-05-17": "Eid al-Adha", "2027-07-18": "Guru Purnima", "2027-08-17": "Raksha Bandhan", "2027-08-25": "Janmashtami", "2027-09-04": "Ganesh Chaturthi", "2027-09-30": "Navratri", "2027-10-09": "Dussehra", "2027-10-28": "Diwali" };
+const nth = (y, m, dow, n) => 1 + (dow - new Date(y, m, 1).getDay() + 7) % 7 + (n - 1) * 7;
+const pad2 = n => String(n).padStart(2, "0");
+function eventsOn(dt) {
+  const y = dt.getFullYear(), m = dt.getMonth(), d = dt.getDate(), k = pad2(m + 1) + "-" + pad2(d), out = [];
+  (FIXED[k] || "").split("|").concat((LUNAR[y + "-" + k] || "").split("|")).filter(Boolean).forEach(x => out.push(x));
+  if (m === 4 && d === nth(y, 4, 0, 2)) out.push("Mother's Day");
+  if (m === 5 && d === nth(y, 5, 0, 3)) out.push("Father's Day");
+  if (m === 7 && d === nth(y, 7, 0, 1)) out.push("Friendship Day");
+  if (m === 10 && d === nth(y, 10, 4, 4)) out.push("Thanksgiving");
+  return out;
+}
+
+/* Saved contacts (stored on this device only) */
+const CK = "greet_contacts_v1";
+const loadContacts = () => { try { return JSON.parse(localStorage.getItem(CK) || "[]"); } catch { return []; } };
+const saveContacts = a => { try { localStorage.setItem(CK, JSON.stringify(a)); } catch { say("Couldn't save – browser storage is blocked.", "err"); } };
+function upsert(c) { const a = loadContacts(), i = a.findIndex(k => k.num === c.num); if (i >= 0) a[i] = { ...a[i], ...c }; else a.push(c); saveContacts(a); }
+function renderContacts() {
+  const a = loadContacts(), gs = [...new Set(a.map(c => c.g || "General"))], gb = $("gchips"), cl = $("clist"), gl = $("glist");
+  gb.innerHTML = ""; gl.innerHTML = "";
+  gs.forEach(g => { const o = document.createElement("option"); o.value = g; gl.append(o); const b = document.createElement("button"); b.type = "button"; b.className = "occ"; b.textContent = `👥 ${g} (${a.filter(c => (c.g || "General") === g).length})`; b.onclick = () => loadGroup(g); gb.append(b); });
+  cl.innerHTML = ""; if (!a.length) cl.textContent = "No saved contacts yet.";
+  a.forEach(c => {
+    const d = document.createElement("div"); d.className = "ctl"; const sp = document.createElement("span");
+    sp.textContent = `${c.name} · +${c.num}` + (c.g ? ` · ${c.g}` : "") + (c.bday ? ` · 🎂 ${c.bday.slice(5)}` : "") + (c.ann ? ` · 💞 ${c.ann.slice(5)}` : "");
+    const x = document.createElement("button"); x.type = "button"; x.className = "ghost"; x.textContent = "×"; x.setAttribute("aria-label", "Delete contact");
+    x.onclick = () => { saveContacts(loadContacts().filter(k => k.num !== c.num)); renderContacts(); renderFest(); };
+    d.append(sp, x); cl.append(d);
+  });
+}
+function loadGroup(g) {
+  const rows = [...rcps.children]; if (rows.length === 1 && !rows[0].querySelector(".rn").value && !rows[0].querySelector(".rp").value) rows[0].remove();
+  const have = new Set(collect().out.map(p => p.to));
+  loadContacts().filter(c => (c.g || "General") === g && !have.has(c.num)).forEach(c => addRow(c.name, c.num));
+  if (!rcps.children.length) addRow(); count(); redraw();
+}
+$("contactsB").onclick = () => { $("cpanel").hidden = !$("cpanel").hidden; };
+$("cAdd").onclick = () => {
+  const name = $("cn").value.trim(), num = normalizeNumber($("cp").value);
+  if (!name || !num) return say("Enter a name and a valid number to save.", "err");
+  upsert({ name, num, g: $("cg").value.trim(), bday: $("cb").value, ann: $("ca").value });
+  ["cn", "cp", "cb", "ca"].forEach(i => $(i).value = ""); say("Contact saved on this device.", "ok"); renderContacts(); renderFest();
+};
+$("cSaveRcp").onclick = () => {
+  const { out } = collect(); if (!out.length) return say("Add recipients first.", "err");
+  const g = (prompt("Save these people to which group?", $("cg").value.trim() || "Family") || "").trim(); if (!g) return;
+  out.forEach(p => upsert({ name: p.name, num: p.to, g })); say(`${out.length} saved to "${g}".`, "ok"); renderContacts();
+};
+
+/* Festival-of-the-day banner + birthday/anniversary reminders */
+function renderFest() {
+  const box = $("fest"), now = new Date(), items = [];
+  for (let i = 0; i <= 14; i++) { const dt = new Date(now.getFullYear(), now.getMonth(), now.getDate() + i); eventsOn(dt).forEach(n => { if (OCC.some(o => o.n === n)) items.push({ n, i }); }); }
+  loadContacts().forEach(c => [["bday", "Birthday"], ["ann", "Anniversary"]].forEach(([f, n]) => {
+    if (!c[f]) return; const [mm, dd] = c[f].slice(5).split("-").map(Number);
+    for (let i = 0; i <= 7; i++) { const dt = new Date(now.getFullYear(), now.getMonth(), now.getDate() + i); if (dt.getMonth() + 1 === mm && dt.getDate() === dd) items.push({ n, i, c }); }
+  }));
+  items.sort((x, y) => x.i - y.i); box.innerHTML = "";
+  if (!items.length) { box.hidden = true; return; }
+  box.hidden = false; const h = document.createElement("b"); h.textContent = "🎉 Festivals & reminders"; box.append(h);
+  items.slice(0, 6).forEach(it => {
+    const r = document.createElement("div"); r.className = "row"; const sp = document.createElement("span");
+    sp.textContent = `${OCC.find(o => o.n === it.n).e} ${it.c ? it.c.name + "'s " : ""}${it.n} – ${it.i === 0 ? "today" : it.i === 1 ? "tomorrow" : "in " + it.i + " days"}`;
+    const b = document.createElement("button"); b.type = "button"; b.className = "ghost"; b.textContent = it.c ? "Send wishes" : "Use this";
+    b.onclick = () => { if (it.c) { rcps.innerHTML = ""; addRow(it.c.name, it.c.num); count(); } pick(OCC.findIndex(o => o.n === it.n)); scrollTo({ top: 0, behavior: "smooth" }); };
+    r.append(sp, b); box.append(r);
+  });
+}
+renderContacts(); renderFest();
+
+/* Sending helpers */
+async function sendNow(to, cardUrl, caption, body, urls, emoji) {
+  if (cardUrl) { await ultra("image", { to, image: cardUrl, caption }); await sleep(600); }
+  await ultra("chat", { to, body });
+  for (let i = 0; i < urls.length; i++) {
+    await sleep(600); const u = urls[i], n = urls.length > 1 ? ` ${i + 1}/${urls.length}` : "";
+    if (u.img) await ultra("image", { to, image: u.url, caption: `🖼️ *Photo${n}* ${emoji}` });
+    else await ultra("document", { to, document: u.url, filename: u.name, caption: `📎 *File${n}*` });
+  }
+}
+function showManual(li, name, to, text, err) {
+  li.className = err ? "bad" : "ok"; li.textContent = err ? `⚠️ ${name} (+${to}): ${err} – ` : `📲 ${name} (+${to}) – `;
+  const a = document.createElement("a"); a.href = `https://wa.me/${to}?text=${encodeURIComponent(text)}`; a.target = "_blank"; a.rel = "noopener"; a.textContent = "Open WhatsApp & send"; li.append(a);
 }
 
 /* ===== SEND ===== */
 sendBtn.onclick = async () => {
   const { out: people, errs } = collect(), from = $("from").value.trim(), text = msg.value.trim();
   if (errs.length) return say(errs[0], "err");
-  if (!people.length) return say("Kam se kam ek naam aur number daalo.", "err");
-  if (people.length > MAX_PEOPLE) return say(`Ek baar mein max ${MAX_PEOPLE} log.`, "err");
-  if (!text) return say("Occasion chuno ya apna message likho.", "err");
-  if (people.length > 1 && !confirm(`${people.length} logon ko bhejna hai. Sab ko naam ke saath alag-alag message jayega. Continue?`)) return;
+  if (!people.length) return say("Please enter at least one name and number.", "err");
+  if (people.length > MAX_PEOPLE) return say(`Maximum ${MAX_PEOPLE} people at a time.`, "err");
+  if (!text) return say("Pick an occasion or write your own message.", "err");
+  const manual = $("manual").checked, when = $("when").value ? new Date($("when").value).getTime() : 0;
+  if (when && when < Date.now() + 60000) return say("Please pick a time at least a minute in the future.", "err");
+  if (people.length > 1 && !confirm(`You are about to send to ${people.length} people. Each will get a separate message with their own name. Continue?`)) return;
 
   const o = curOcc(), res = $("res"); res.innerHTML = "";
   const lis = people.map(p => { const li = document.createElement("li"); li.className = "wait"; li.textContent = `⏳ ${p.name} (+${p.to})`; res.append(li); return li; });
@@ -398,20 +739,20 @@ sendBtn.onclick = async () => {
 
   try {
     const urls = [];
-    for (let i = 0; i < images.length; i++) { say(`Upload ho raha hai ${i + 1}/${images.length}...`); urls.push({ url: await upload(images[i]), name: images[i].name, img: isImg(images[i]) }); }
+    for (let i = 0; i < images.length; i++) { say(`Uploading ${i + 1}/${images.length}...`); urls.push({ url: await upload(images[i]), name: images[i].name, img: isImg(images[i]) }); }
 
     for (let k = 0; k < people.length; k++) {
       const { name, to } = people[k], li = lis[k];
-      say(`Bhej rahe hain ${k + 1}/${people.length}: ${name}...`);
+      say(`Sending ${k + 1}/${people.length}: ${name}...`);
       try {
         const finalText = text.replaceAll("{name}", name);
-        const hasAtt = urls.length > 0;   // link sirf tab jab photo/file ho
+        const hasAtt = urls.length > 0;   // link only when a photo/file is attached
         let link = null, token = null;
         if (hasAtt) { token = await tokenFor(to); link = new URL(location.pathname.split("/").pop() || "greetings.html", location.href); link.search = "?t=" + token; }
 
         let cardUrl = null;
         if (tpl >= 0) {
-          const cv = document.createElement("canvas"); drawCard(cv, TPL[tpl], o, name, from, 1);
+          const cv = document.createElement("canvas"); drawCard(cv, tplOf(tpl), o, name, from, 1);
           const blob = await new Promise(r => cv.toBlob(r, "image/jpeg", .92));
           cardUrl = await upload(blob, "card.jpg");
         }
@@ -423,26 +764,28 @@ sendBtn.onclick = async () => {
           catch (err) { console.warn("Portal save failed:", err); }
         }
 
-        if (cardUrl) { await ultra("image", { to, image: cardUrl, caption: `${o.e} *${o.h}* ${o.e}` }); await sleep(600); }
-        const body = (cardUrl ? "" : `${o.e} *${o.n}* ${o.e}\n${LINE}\n\n`) + `${finalText}\n\n` + (from ? `— *${from}* 💌\n\n` : "") + `${LINE}\n` + (hasAtt ? `🔗 *Photos & files yahan dekho (HD download):*\n${link.href}\n\n` : "") + CREDIT;
-        await ultra("chat", { to, body });
-        for (let i = 0; i < urls.length; i++) {
-          await sleep(600); const u = urls[i], n = urls.length > 1 ? ` ${i + 1}/${urls.length}` : "";
-          if (u.img) await ultra("image", { to, image: u.url, caption: `🖼️ *Photo${n}* ${o.e}` });
-          else await ultra("document", { to, document: u.url, filename: u.name, caption: `📎 *File${n}*` });
+        const caption = `${o.e} *${o.h}* ${o.e}`;
+        const body = (cardUrl ? "" : `${o.e} *${o.h}* ${o.e}\n${LINE}\n\n`) + `${finalText}\n\n` + (from ? `— *${from}* 💌\n\n` : "") + `${LINE}\n` + (hasAtt ? `🔗 *View photos & files here (HD download):*\n${link.href}\n\n` : "") + CREDIT;
+        const manualText = (cardUrl && !hasAtt ? `🖼️ ${cardUrl}\n\n` : "") + body;
+        const logIt = mode => addDoc(collection(db, COL_LOG), { receiverName: name, receiverNumber: "+" + to, occasion: o.n, template: tpl >= 0 ? TPL[tpl].n : "none", message: finalText, from, images: allImgs, files: fileList, linkSent: hasAtt, mode, createdAt: serverTimestamp() }).catch(err => console.warn("Log save failed:", err));
+        if (when) {
+          await addDoc(collection(db, COL_SCHED), { to, name, sendAt: when, status: "pending", cardUrl, caption, body, atts: urls.map(u => ({ url: u.url, name: u.name, img: u.img })), emoji: o.e });
+          logIt("scheduled"); li.className = "ok"; li.textContent = `🕒 ${name} (+${to}) – scheduled for ${new Date(when).toLocaleString()}`; ok++;
+        } else if (manual) {
+          showManual(li, name, to, manualText); logIt("manual"); ok++;
+        } else {
+          try { await sendNow(to, cardUrl, caption, body, urls, o.e); logIt("sent"); li.className = "ok"; li.textContent = `✅ ${name} (+${to})`; ok++; }
+          catch (err) { console.error(err); showManual(li, name, to, manualText, err.message); }
         }
-
-        addDoc(collection(db, COL_LOG), { receiverName: name, receiverNumber: "+" + to, occasion: o.n, template: tpl >= 0 ? TPL[tpl].n : "none", message: finalText, from, images: allImgs, files: fileList, linkSent: hasAtt, createdAt: serverTimestamp() }).catch(err => console.warn("Log save failed:", err));
-        li.className = "ok"; li.textContent = `✅ ${name} (+${to})`; ok++;
       } catch (e) { console.error(e); li.className = "bad"; li.textContent = `❌ ${name} (+${to}): ${e.message}`; }
       progress(Math.round((k + 1) / people.length * 100));
       if (k < people.length - 1) await sleep(GAP_MS);
     }
 
-    say(ok === people.length ? `✅ Sabko bhej diya (${ok}/${people.length})!` : `${ok}/${people.length} bheje gaye. Upar dekho kaun fail hua.`, ok === people.length ? "ok" : "err");
-    if (ok === people.length) { msg.value = ""; cur = -1; [...occBox.children].forEach(b => b.setAttribute("aria-pressed", "false")); images = []; renderThumbs(); redraw(); }
+    say(ok === people.length ? `✅ ${when ? "Scheduled" : manual ? "Links ready" : "Sent"} for everyone (${ok}/${people.length})!` : `${ok}/${people.length} sent. See above for the ones that failed.`, ok === people.length ? "ok" : "err");
+    if (ok === people.length) { msg.value = ""; cur = -1; [...occBox.children].forEach(b => b.setAttribute("aria-pressed", "false")); resetCz(); ch.placeholder = ct.placeholder = ce.placeholder = ""; images = []; renderThumbs(); redraw(); }
     $("sendtxt").textContent = "Sent ✓"; setTimeout(() => { $("sendtxt").textContent = "Send to WhatsApp"; }, 2500);
-  } catch (e) { console.error(e); say(e.message || "Kuch gadbad ho gayi, dobara try karo.", "err"); }
+  } catch (e) { console.error(e); say(e.message || "Something went wrong, please try again.", "err"); }
   finally { sendBtn.disabled = false; }
 };
 
