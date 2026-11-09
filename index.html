@@ -189,8 +189,6 @@ footer strong{color:var(--gold);font-size:16px}
     <div class="thumbs" id="thumbs"></div>
 
     <label class="chk"><input type="checkbox" id="manual"><span>Backup mode – don't use Ultramsg; give me WhatsApp links to send manually (also appears automatically if a send fails)</span></label>
-    <label for="when">Schedule for later <span>(optional – needs the scheduler function from the setup notes)</span></label>
-    <input id="when" type="datetime-local">
     <button class="send" id="send"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M2.5 11.3 20.7 3.6c.9-.4 1.8.5 1.4 1.4L14.4 21.2c-.4.9-1.7.8-2-.1l-2-6.1-6.1-2c-.9-.3-1-1.6-.1-1.9z"/></svg><span id="sendtxt">Send to WhatsApp</span></button>
     <div class="bar" id="bar"><b id="barfill"></b></div>
     <div class="status" id="status" role="status" aria-live="polite"></div>
@@ -215,7 +213,6 @@ const ULTRA = { base: "https://api.ultramsg.com/instance192669", token: "xnbaeej
 const SALT = "greetings-siddhesh-2026";            // do not change, or old links will stop working
 const COL_PORTAL = "greet_portal";                 // separate collection
 const COL_LOG = "greet_shares";
-const COL_SCHED = "greet_schedule";                    // separate collection
 const CREDIT = "_Developed by Siddhesh Chandrakant Sangale_";
 const LINE = "━━━━━━━━━━━━━━";
 const GAP_MS = 1500;                               // gap between people (avoids spam blocks)
@@ -728,8 +725,7 @@ sendBtn.onclick = async () => {
   if (!people.length) return say("Please enter at least one name and number.", "err");
   if (people.length > MAX_PEOPLE) return say(`Maximum ${MAX_PEOPLE} people at a time.`, "err");
   if (!text) return say("Pick an occasion or write your own message.", "err");
-  const manual = $("manual").checked, when = $("when").value ? new Date($("when").value).getTime() : 0;
-  if (when && when < Date.now() + 60000) return say("Please pick a time at least a minute in the future.", "err");
+  const manual = $("manual").checked;
   if (people.length > 1 && !confirm(`You are about to send to ${people.length} people. Each will get a separate message with their own name. Continue?`)) return;
 
   const o = curOcc(), res = $("res"); res.innerHTML = "";
@@ -768,10 +764,7 @@ sendBtn.onclick = async () => {
         const body = (cardUrl ? "" : `${o.e} *${o.h}* ${o.e}\n${LINE}\n\n`) + `${finalText}\n\n` + (from ? `— *${from}* 💌\n\n` : "") + `${LINE}\n` + (hasAtt ? `🔗 *View photos & files here (HD download):*\n${link.href}\n\n` : "") + CREDIT;
         const manualText = (cardUrl && !hasAtt ? `🖼️ ${cardUrl}\n\n` : "") + body;
         const logIt = mode => addDoc(collection(db, COL_LOG), { receiverName: name, receiverNumber: "+" + to, occasion: o.n, template: tpl >= 0 ? TPL[tpl].n : "none", message: finalText, from, images: allImgs, files: fileList, linkSent: hasAtt, mode, createdAt: serverTimestamp() }).catch(err => console.warn("Log save failed:", err));
-        if (when) {
-          await addDoc(collection(db, COL_SCHED), { to, name, sendAt: when, status: "pending", cardUrl, caption, body, atts: urls.map(u => ({ url: u.url, name: u.name, img: u.img })), emoji: o.e });
-          logIt("scheduled"); li.className = "ok"; li.textContent = `🕒 ${name} (+${to}) – scheduled for ${new Date(when).toLocaleString()}`; ok++;
-        } else if (manual) {
+        if (manual) {
           showManual(li, name, to, manualText); logIt("manual"); ok++;
         } else {
           try { await sendNow(to, cardUrl, caption, body, urls, o.e); logIt("sent"); li.className = "ok"; li.textContent = `✅ ${name} (+${to})`; ok++; }
@@ -782,7 +775,7 @@ sendBtn.onclick = async () => {
       if (k < people.length - 1) await sleep(GAP_MS);
     }
 
-    say(ok === people.length ? `✅ ${when ? "Scheduled" : manual ? "Links ready" : "Sent"} for everyone (${ok}/${people.length})!` : `${ok}/${people.length} sent. See above for the ones that failed.`, ok === people.length ? "ok" : "err");
+    say(ok === people.length ? `✅ ${manual ? "Links ready" : "Sent"} for everyone (${ok}/${people.length})!` : `${ok}/${people.length} sent. See above for the ones that failed.`, ok === people.length ? "ok" : "err");
     if (ok === people.length) { msg.value = ""; cur = -1; [...occBox.children].forEach(b => b.setAttribute("aria-pressed", "false")); resetCz(); ch.placeholder = ct.placeholder = ce.placeholder = ""; images = []; renderThumbs(); redraw(); }
     $("sendtxt").textContent = "Sent ✓"; setTimeout(() => { $("sendtxt").textContent = "Send to WhatsApp"; }, 2500);
   } catch (e) { console.error(e); say(e.message || "Something went wrong, please try again.", "err"); }
